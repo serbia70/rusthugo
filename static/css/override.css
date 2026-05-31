@@ -608,9 +608,7 @@ pre[class*="language-"] {
     border-radius: var(--radius);
 }
 
-/* ==================== Post Grid Layout (Series/TOC) ==================== */
-body.has-series .main { max-width: none; }
-
+/* ==================== Post Grid Layout (Series/TOC) - reserved ==================== */
 .post-grid {
     width: calc(100% + (var(--gap) * 2));
     margin: 0 calc(var(--gap) * -1);
