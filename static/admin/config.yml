@@ -1,0 +1,42 @@
+backend:
+  name: github
+  repo: serbia70/rusthugo
+  branch: main
+  base_url: https://decapcms-oauth.vercel.app
+
+media_folder: static/images
+public_folder: /images
+
+collections:
+  - name: "posts"
+    label: "博客文章"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "标签", name: "tags", widget: "list", default: [] }
+      - { label: "系列", name: "series", widget: "list", required: false, default: [] }
+      - { label: "描述", name: "description", widget: "string", required: false }
+      - { label: "正文", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "页面"
+    editor:
+      preview: false
+    files:
+      - label: "关于"
+        name: "about"
+        file: "content/about/_index.md"
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "正文", name: "body", widget: "markdown" }
+      - label: "友链"
+        name: "links"
+        file: "content/links/_index.md"
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "正文", name: "body", widget: "markdown" }
