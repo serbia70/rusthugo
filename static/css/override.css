@@ -609,8 +609,7 @@ pre[class*="language-"] {
 }
 
 /* ==================== Post Grid Layout (Series/TOC) ==================== */
-.post-grid ~ .post-grid__content { max-width: none; }
-body.post .main:has(.post-grid) { max-width: none; }
+body.has-series .main { max-width: none; }
 
 .post-grid {
     width: calc(100% + (var(--gap) * 2));
