@@ -2,7 +2,7 @@
     {% if config.extra.papermod.copyright %}
     <span>{{ config.extra.papermod.copyright }}</span>
     {% else %}
-    <span>&copy; {{ now() | date(format="%Y") }} <a href="{{ config.base_url }}">{{ config.author }}</a></span>
+    <span>&copy; {{ now() | date(format="%Y") }} <a href="{{ config.base_url }}">{{ config.extra.papermod.title | default(value="rusthugo") }}</a></span>
     {% endif %}
     <span>
         Powered by

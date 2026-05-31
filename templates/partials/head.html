@@ -18,9 +18,8 @@
 
 {% if page.author %}
 <meta name="author" content="{{ page.author }}">
-{% elif config.author %}
-<meta name="author" content="{{ config.author }}">
-{% else %}
+{% elif config.extra.papermod.title %}
+<meta name="author" content="{{ config.extra.papermod.title }}">
 {% endif %}
 {% if current_url %}
 <link rel="canonical" href="{{ current_url }}">
