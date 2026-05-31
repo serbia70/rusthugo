@@ -1,6 +1,7 @@
 +++
 sort_by = "date"
 paginate_by = 5
+transparent = true
 +++
 
 欢迎光临小站🥂

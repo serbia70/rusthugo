@@ -1,5 +1,6 @@
-{# Home page post listing #}
-{% for page in paginator.pages %}
+{# Home page post listing - fetches from posts section #}
+{% set posts_section = get_section(path="posts/_index.md") %}
+{% for page in posts_section.pages %}
 {% if not page.extra.is_search_page %}
 <article class="post-entry">
   {% if page.extra.cover_image %}
@@ -25,16 +26,3 @@
 </article>
 {% endif %}
 {% endfor %}
-
-{% if paginator %}
-<footer class="page-footer">
-    <nav class="pagination">
-    {% if paginator.previous %}
-        <a class="previous" href="{{ paginator.previous | safe }}">&laquo; Prev</a>
-    {% endif %}
-    {% if paginator.next %}
-        <a class="next" href="{{ paginator.next | safe }}">Next &raquo;</a>
-    {% endif %}
-    </nav>
-</footer>
-{% endif %}
