@@ -1,6 +1,6 @@
 // Decap CMS GitHub OAuth - callback endpoint
 module.exports = async function handler(req, res) {
-  const { code } = req.query;
+  const { code, state } = req.query;
 
   if (!code) {
     res.writeHead(302, { Location: '/admin/#error=missing_code' });
@@ -25,30 +25,20 @@ module.exports = async function handler(req, res) {
     const tokenData = await tokenRes.json();
 
     if (tokenData.error) {
-      const errMsg = encodeURIComponent(tokenData.error_description || tokenData.error);
-      res.writeHead(302, { Location: `/admin/#error=${errMsg}` });
+      res.writeHead(302, { Location: `/admin/#error=${encodeURIComponent(tokenData.error_description || tokenData.error)}` });
       res.end();
       return;
     }
 
     const token = tokenData.access_token;
-    const data = JSON.stringify({ token: token, provider: 'github' });
 
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).send(`<!DOCTYPE html>
-<html><head><title>授权成功</title></head><body>
-<p style="text-align:center;margin-top:40px;font-family:sans-serif;">授权成功，正在跳转...</p>
-<script>
-(function() {
-  var data = ${JSON.stringify(data)};
-  // Decap CMS expected format: authorization:<provider>:success:<data>
-  window.opener.postMessage('authorization:github:success:' + JSON.stringify(data), '*');
-  setTimeout(function() { window.close(); }, 500);
-})();
-</script>
-</body></html>`);
+    // Redirect back to admin with token in hash
+    res.writeHead(302, {
+      Location: `/admin/#provider=github&token=${token}`
+    });
+    res.end();
   } catch (err) {
-    res.writeHead(302, { Location: `/admin/#error=${encodeURIComponent('服务器错误: ' + err.message)}` });
+    res.writeHead(302, { Location: `/admin/#error=${encodeURIComponent('Server error: ' + err.message)}` });
     res.end();
   }
 };
