@@ -1,101 +1,158 @@
 {% extends "index.html" %}
 {% block main %}
 
-<article class="post-single">
-  <div class="breadcrumbs">
-      <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
-      <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;&raquo;&nbsp;
-      <a href="{{ page.permalink }}">{{ page.title }}</a>
-  </div>
+{% if page.taxonomies.series and config.extra.papermod.show_series_sidebar | default(value=true) %}
+  {% set has_series = true %}
+{% else %}
+  {% set has_series = false %}
+{% endif %}
+{% set show_toc = config.extra.papermod.show_toc | default(value=true) %}
 
-  <header class="entry-header">
-      <h1>{{ page.title }}</h1>
-      {% if page.description %}
-      <div class="post-description">{{ page.description }}</div>
+{% if has_series %}
+<div class="post-layout">
+  <aside class="post-layout__sidebar">
+    {% include "partials/series_sidebar.html" %}
+  </aside>
+{% endif %}
+
+  <div class="post-layout__content">
+    <article class="post-single">
+      <div class="breadcrumbs">
+          <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
+          <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;&raquo;&nbsp;
+          <a href="{{ page.permalink }}">{{ page.title }}</a>
+      </div>
+
+      <header class="entry-header">
+          <h1>{{ page.title }}</h1>
+          {% if page.description %}
+          <div class="post-description">{{ page.description }}</div>
+          {% endif %}
+          {% if config.extra.papermod.show_post_meta | default(value=true) %}
+          <div class="post-meta">
+          {% include "partials/post_meta.html" %}
+          </div>
+          {% endif %}
+      </header>
+
+      {% if page.extra.cover_image %}
+      <figure class="entry-cover1">
+          <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
+      </figure>
       {% endif %}
-      {% if config.extra.papermod.show_post_meta | default(value=true) %}
-      <div class="post-meta">
-      {% include "partials/post_meta.html" %}
+
+      {% if config.extra.papermod.show_progress_bar | default(value=false) %}
+      <div id="progress-bar" class="progress-bar"></div>
+      {% endif %}
+
+      {% if not has_series and show_toc and page.toc %}
+      <div class="toc">
+          <details {% if config.extra.papermod.toc_open %} open{% endif %}>
+              <summary accesskey="c" title="(Alt + C)">
+                  <span class="details">文章目录</span>
+              </summary>
+              <nav id="TableOfContents">
+                  <ul>
+                      {% for h1 in page.toc %}
+                      <li>
+                          <a href="#{{ h1.id }}">{{ h1.title }}</a>
+                          {% if h1.children | length > 0 %}
+                          <ul>
+                          {% for h2 in h1.children %}
+                              <li>
+                                  <a href="#{{ h2.id }}">{{ h2.title }}</a>
+                                  {% if h2.children | length > 0 %}
+                                  <ul>
+                                      {% for h3 in h2.children %}
+                                      <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+                                      {% endfor %}
+                                  </ul>
+                                  {% endif %}
+                              </li>
+                          {% endfor %}
+                          </ul>
+                          {% endif %}
+                      </li>
+                      {% endfor %}
+                  </ul>
+              </nav>
+          </details>
       </div>
       {% endif %}
-  </header>
 
-  {% if page.extra.cover_image %}
-  <figure class="entry-cover1">
-      <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
-  </figure>
-  {% endif %}
-
-  {% if config.extra.papermod.show_progress_bar | default(value=false) %}
-  <div id="progress-bar" class="progress-bar"></div>
-  {% endif %}
-
-  {% if config.extra.papermod.show_toc | default(value=true) and page.toc %}
-  <div class="toc">
-      <details {% if config.extra.papermod.toc_open %} open{% endif %}>
-          <summary accesskey="c" title="(Alt + C)">
-              <span class="details">文章目录</span>
-          </summary>
-          <nav id="TableOfContents">
-              <ul>
-                  {% for h1 in page.toc %}
-                  <li>
-                      <a href="#{{ h1.id }}">{{ h1.title }}</a>
-                      {% if h1.children | length > 0 %}
-                      <ul>
-                      {% for h2 in h1.children %}
-                          <li>
-                              <a href="#{{ h2.id }}">{{ h2.title }}</a>
-                              {% if h2.children | length > 0 %}
-                              <ul>
-                                  {% for h3 in h2.children %}
-                                  <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
-                                  {% endfor %}
-                              </ul>
-                              {% endif %}
-                          </li>
-                      {% endfor %}
-                      </ul>
-                      {% endif %}
-                  </li>
-                  {% endfor %}
-              </ul>
-          </nav>
-      </details>
-  </div>
-  {% endif %}
-
-  {% if page.content %}
-  <div class="post-content">
-      {{ page.content | safe }}
-  </div>
-  {% endif %}
-
-  <footer class="post-footer">
-      {% if page.taxonomies.tags %}
-      <ul class="post-tags">
-          {% for tag in page.taxonomies.tags %}
-          {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
-          <li><a href="{{ tag_url }}">{{ tag }}</a></li>
-          {% endfor %}
-      </ul>
+      {% if page.content %}
+      <div class="post-content">
+          {{ page.content | safe }}
+      </div>
       {% endif %}
 
-      {% if config.extra.papermod.show_reward | default(value=false) %}
-      {% include "partials/reward.html" %}
-      {% endif %}
+      <footer class="post-footer">
+          {% if page.taxonomies.tags %}
+          <ul class="post-tags">
+              {% for tag in page.taxonomies.tags %}
+              {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
+              <li><a href="{{ tag_url }}">{{ tag }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
 
-      {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
-      {% include "partials/post_nav_links.html" %}
-      {% endif %}
+          {% if config.extra.papermod.show_reward | default(value=false) %}
+          {% include "partials/reward.html" %}
+          {% endif %}
 
-      {% if config.extra.papermod.show_comments | default(value=false) %}
-      {% include "partials/comments.html" %}
-      {% endif %}
-  </footer>
-</article>
+          {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
+          {% include "partials/post_nav_links.html" %}
+          {% endif %}
 
-{% if config.extra.papermod.show_toc | default(value=true) and page.toc %}
+          {% if config.extra.papermod.show_comments | default(value=false) %}
+          {% include "partials/comments.html" %}
+          {% endif %}
+      </footer>
+    </article>
+  </div>{# post-layout__content #}
+
+  {% if has_series and show_toc and page.toc %}
+  <aside class="post-layout__toc">
+    <div class="toc toc--sidebar">
+        <details {% if config.extra.papermod.toc_open %} open{% endif %}>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">文章目录</span>
+            </summary>
+            <nav id="TableOfContents-sidebar">
+                <ul>
+                    {% for h1 in page.toc %}
+                    <li>
+                        <a href="#{{ h1.id }}">{{ h1.title }}</a>
+                        {% if h1.children | length > 0 %}
+                        <ul>
+                        {% for h2 in h1.children %}
+                            <li>
+                                <a href="#{{ h2.id }}">{{ h2.title }}</a>
+                                {% if h2.children | length > 0 %}
+                                <ul>
+                                    {% for h3 in h2.children %}
+                                    <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </details>
+    </div>
+  </aside>
+  {% endif %}
+
+{% if has_series %}
+</div>{# post-layout #}
+{% endif %}
+
+{% if show_toc and page.toc %}
 <script>
 (function() {
     var headings = Array.from(document.querySelectorAll(

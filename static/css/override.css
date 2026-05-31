@@ -608,7 +608,62 @@ pre[class*="language-"] {
     border-radius: var(--radius);
 }
 
-/* ==================== Post Grid Layout (Series/TOC) - reserved ==================== */
+/* ==================== Post Layout (Series Sidebar + Content + TOC) ==================== */
+body.has-series .main { max-width: none; }
+
+.post-layout {
+    display: flex;
+    justify-content: center;
+    gap: var(--gap);
+    padding: 0 var(--gap);
+}
+
+.post-layout__sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--header-height) + var(--gap));
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-height) - var(--gap) * 2);
+    overflow-y: auto;
+}
+
+.post-layout__content {
+    max-width: var(--article-width, 800px);
+    min-width: 0;
+    flex: 1;
+}
+
+.post-layout__toc {
+    width: 220px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--header-height) + var(--gap));
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-height) - var(--gap) * 2);
+    overflow-y: auto;
+}
+
+.toc--sidebar {
+    margin: 0;
+}
+
+@media screen and (max-width: 1200px) {
+    .post-layout__toc { display: none; }
+}
+
+@media screen and (max-width: 900px) {
+    .post-layout { flex-direction: column; padding: 0; }
+    .post-layout__sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+    }
+    .post-layout__content { max-width: 100%; }
+}
+
+/* ==================== Old Post Grid (deprecated, keep for reference) ==================== */
 .post-grid {
     width: calc(100% + (var(--gap) * 2));
     margin: 0 calc(var(--gap) * -1);
