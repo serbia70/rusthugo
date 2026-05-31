@@ -31,6 +31,9 @@
 {% if config.extra.papermod.mac_code_block | default(value=true) %}
 <script src="{{ get_url(path='js/code-block.js') | safe }}" defer></script>
 {% endif %}
+{% if config.extra.papermod.lazy_loading | default(value=true) %}
+<script src="{{ get_url(path='js/lazy-load.js') | safe }}" defer></script>
+{% endif %}
 
 {% block head_favicons %}
 {# /* Favicons */}
