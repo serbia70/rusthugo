@@ -28,8 +28,8 @@ function initSearch() {
   if (!input || !results) return;
 
   var idx = null;
-  if (window.searchIndex && typeof window.searchIndex.search === 'function') {
-    idx = window.searchIndex;
+  if (window.searchIndex && typeof elasticlunr !== 'undefined') {
+    idx = elasticlunr.Index.load(window.searchIndex);
   }
 
   if (!idx) {
