@@ -16,8 +16,8 @@ module.exports = async function handler(req, res) {
         'Accept': 'application/json',
       },
       body: JSON.stringify({
-        client_id: process.env.OAUTH_CLIENT_ID,
-        client_secret: process.env.OAUTH_CLIENT_SECRET,
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
         code,
       }),
     });

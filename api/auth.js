@@ -7,7 +7,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const clientId = process.env.OAUTH_CLIENT_ID;
+  const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
     res.status(500).send('OAUTH_CLIENT_ID not configured');
     return;
