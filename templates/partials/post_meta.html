@@ -8,12 +8,6 @@
 | 更新: {{ page.date | date(format="%Y-%m-%d") }}
 {% endif %}
 
-{% if config.extra.papermod.show_word_count | default(value=true) %}
-| 字数: {{ page.word_count }}字
-{% endif %}
-
-| 作者: {{ page.author | default(value=config.extra.papermod.title) }}
-
 {% if page.taxonomies.tags %}
 | 标签:
 {% for tag in page.taxonomies.tags %}
