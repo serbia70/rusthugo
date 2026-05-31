@@ -1,1 +1,116 @@
-{# Comments - will be implemented in Task 9 #}
+{# Comments - Twikoo integration, ported from lvbibir Hugo PaperMod #}
+{% if config.extra.papermod.show_comments | default(value=false) %}
+{% set comment_system = config.extra.papermod.comment_system | default(value="twikoo") %}
+{% set env_id = config.extra.papermod.comment_env_id | default(value="") %}
+{% set script_src = config.extra.papermod.comment_script_src | default(value="https://cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.min.js") %}
+
+{% if comment_system == "twikoo" %}
+<div id="comments" class="comments">
+    <div class="pagination__title">
+        <span class="pagination__title-h" style="font-size: 20px;">&#x1F4AC; 评论</span>
+        <hr />
+    </div>
+
+    <div class="comment-loader">
+        <button id="tcomment-load" class="comment-load-btn" type="button">
+            &#x52A0;&#x8F7D;&#x8BC4;&#x8BBA;
+        </button>
+        <span id="tcomment-status" class="comment-load-status" aria-live="polite"></span>
+    </div>
+
+    <div id="tcomment"></div>
+
+    <script>
+        (function () {
+            var commentsRoot = document.getElementById("comments");
+            var commentEl = document.getElementById("tcomment");
+            var loadBtn = document.getElementById("tcomment-load");
+            var statusEl = document.getElementById("tcomment-status");
+            if (!commentsRoot || !commentEl || !loadBtn) return;
+
+            var scriptSrc = "{{ script_src | safe }}";
+            var envId = "{{ env_id | safe }}";
+            var loading = false;
+            var initialized = false;
+
+            function setStatus(text) {
+                if (!statusEl) return;
+                statusEl.textContent = text || "";
+            }
+
+            function setButtonDisabled(disabled) {
+                loadBtn.disabled = disabled;
+                loadBtn.setAttribute("aria-disabled", disabled ? "true" : "false");
+            }
+
+            function fail(message) {
+                loading = false;
+                setButtonDisabled(false);
+                setStatus(message || "评论加载失败，请刷新重试");
+            }
+
+            function initTwikoo() {
+                if (initialized) return;
+                if (!window.twikoo || typeof window.twikoo.init !== "function") {
+                    fail("评论加载失败，请刷新重试");
+                    return;
+                }
+                window.twikoo.init({
+                    envId: envId,
+                    el: "#tcomment",
+                    lang: "zh-CN",
+                    path: window.location.pathname,
+                });
+                initialized = true;
+                loading = false;
+                setStatus("");
+                if (loadBtn) loadBtn.remove();
+            }
+
+            function loadTwikoo() {
+                if (initialized || loading) return;
+                loading = true;
+                setButtonDisabled(true);
+                setStatus("正在加载评论...");
+
+                if (window.twikoo && typeof window.twikoo.init === "function") {
+                    initTwikoo();
+                    return;
+                }
+
+                var existing = document.querySelector('script[src="' + scriptSrc + '"]');
+                if (existing) {
+                    existing.addEventListener("load", initTwikoo, { once: true });
+                    existing.addEventListener("error", function() { fail(); }, { once: true });
+                    return;
+                }
+
+                var script = document.createElement("script");
+                script.src = scriptSrc;
+                script.defer = true;
+                script.onload = initTwikoo;
+                script.onerror = function() { fail(); };
+                document.head.appendChild(script);
+            }
+
+            loadBtn.addEventListener("click", loadTwikoo);
+
+            if ("IntersectionObserver" in window) {
+                var observer = new IntersectionObserver(
+                    function(entries) {
+                        for (var i = 0; i < entries.length; i++) {
+                            if (!entries[i].isIntersecting) continue;
+                            observer.disconnect();
+                            loadTwikoo();
+                            break;
+                        }
+                    },
+                    { rootMargin: "200px 0px" }
+                );
+                observer.observe(commentsRoot);
+            }
+        })();
+    </script>
+</div>
+{% endif %}
+{% endif %}

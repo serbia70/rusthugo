@@ -1,1 +1,49 @@
-{# Reward / Donate - will be implemented in Task 9 #}
+{# Reward / Donate - Ported from lvbibir Hugo PaperMod #}
+{% if config.extra.papermod.show_reward | default(value=false) %}
+{% set wechat_qr = config.extra.papermod.reward_wechat_qr | default(value="") %}
+{% set alipay_qr = config.extra.papermod.reward_alipay_qr | default(value="") %}
+
+<div id="reward-container" class="reward-container">
+    <button id="rewardButton" class="reward-button">
+        &#x2764;&#xFE0F; &#x6253;&#x8D4F;
+    </button>
+    <div id="QR" class="qr-modal" style="display: none;">
+        <div class="qr-inner">
+            {% if wechat_qr %}
+            <div class="qr-item">
+                <img src="{{ wechat_qr }}" alt="&#x5FAE;&#x4FE1;&#x8D5E;&#x8D4F;" loading="lazy" />
+                <span>&#x5FAE;&#x4FE1;</span>
+            </div>
+            {% endif %}
+            {% if alipay_qr %}
+            <div class="qr-item">
+                <img src="{{ alipay_qr }}" alt="&#x652F;&#x4ED8;&#x5B9D;&#x8D5E;&#x8D4F;" loading="lazy" />
+                <span>&#x652F;&#x4ED8;&#x5B9D;</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var btn = document.getElementById("rewardButton");
+    var qr = document.getElementById("QR");
+    if (!btn || !qr) return;
+
+    btn.addEventListener("click", function() {
+        if (qr.style.display === "none") {
+            qr.style.display = "block";
+        } else {
+            qr.style.display = "none";
+        }
+    });
+
+    document.addEventListener("click", function(e) {
+        if (!e.target.closest("#reward-container")) {
+            qr.style.display = "none";
+        }
+    });
+})();
+</script>
+{% endif %}
