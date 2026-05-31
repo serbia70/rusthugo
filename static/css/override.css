@@ -61,6 +61,8 @@ body {
 
 h1, h2, h3, h4, h5, h6,
 .entry-header h1, .entry-header h2,
+.post-content h1, .post-content h2, .post-content h3,
+.post-content h4, .post-content h5, .post-content h6,
 .post-title, .entry-content,
 .post-meta, .entry-footer,
 .breadcrumbs, .post-tags,
@@ -70,7 +72,7 @@ h1, h2, h3, h4, h5, h6,
 .terms-tags, .post-description,
 .comments, .comment-loader,
 .reward-container, .site-stats {
-    font-family: var(--lv-font-body);
+    font-family: var(--lv-font-body) !important;
 }
 
 /* ==================== Layout Overrides ==================== */
