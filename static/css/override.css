@@ -68,6 +68,29 @@ body {
     max-width: calc(var(--main-width) + var(--gap) * 5);
 }
 
+/* ==================== Global Link Color ==================== */
+a {
+    color: var(--lv-accent);
+}
+
+.post-content a {
+    color: var(--lv-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.entry-header h2 a,
+.entry-header h1 a,
+.post-title a,
+.logo a,
+#menu a,
+.breadcrumbs a,
+.post-tags a,
+.paginav a {
+    color: inherit;
+}
+
+/* ==================== Footer ==================== */
 .footer {
     max-width: none;
     padding: 10px 0 5px 0;
