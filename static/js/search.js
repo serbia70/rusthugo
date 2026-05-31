@@ -1,10 +1,5 @@
+// Zola search - adapted for elasticlunr_javascript format
 
-// Zola Paper Mod javascript search code by Stephen Hoover
-// Used:
-// - https://github.com/getzola/zola/blob/master/docs/static/search.js
-// - https://github.com/reorx/hugo-PaperModX/blob/master/assets/js/fastsearch.js
-
-// Debounce function definition
 function debounce(func, wait, immediate) {
   var timeout;
   return function() {
@@ -21,76 +16,48 @@ function debounce(func, wait, immediate) {
 }
 
 function formatSearchResultItem(item, terms) {
-  // Adjust this to match your desired result item structure
-  return `<li class="post-entry">
-            <header class="entry-header">${item.doc.title}&nbsp;»</header>` +
-            `<a href="${item.ref}" aria-label="${item.doc.title}"></a>
-          </li>`;
+  return '<li class="post-entry">' +
+            '<header class="entry-header">' + item.doc.title + '&nbsp;&raquo;</header>' +
+            '<a href="' + item.ref + '" aria-label="' + item.doc.title + '"></a>' +
+          '</li>';
 }
 
 function initSearch() {
-  var $searchInput = document.getElementById("searchInput"); // Make sure ID matches HTML
-  var $searchResults = document.getElementById("searchResults"); // Ensure this matches your HTML
-  var MAX_ITEMS = 10;
+  var input = document.getElementById("searchInput");
+  var results = document.getElementById("searchResults");
+  if (!input || !results) return;
 
-  var options = {
-    bool: "AND",
-    fields: {
-      title: {boost: 2},
-      body: {boost: 1},
-    }
-  };
-  var currentTerm = "";
-  var index;
-  
-  var initIndex = async function () {
-    if (index === undefined) {
-      index = fetch("/search_index.en.json") // Make sure the path to your search index is correct
-        .then(
-          async function(response) {
-            return await elasticlunr.Index.load(await response.json());
-        }
-      );
-    }
-    let res = await index;
-    return res;
+  var idx = null;
+  if (window.searchIndex && typeof window.searchIndex.search === 'function') {
+    idx = window.searchIndex;
   }
 
-  $searchInput.addEventListener("keyup", debounce(async function() {
-    var term = $searchInput.value.trim();
-    if (term === currentTerm) {
-      return;
-    }
-    $searchResults.style.display = term === "" ? "none" : "block";
-    $searchResults.innerHTML = ""; // Clear previous results
-    currentTerm = term;
-    if (term === "") {
+  if (!idx) {
+    results.innerHTML = '<li>搜索索引加载失败，请刷新重试</li>';
+    return;
+  }
+
+  input.addEventListener("input", debounce(function() {
+    var term = input.value.trim();
+    if (term.length < 2) {
+      results.innerHTML = '';
       return;
     }
 
-    var results = (await initIndex()).search(term, options);
-    if (results.length === 0) {
-      $searchResults.style.display = "none";
-      return;
+    var searchResults = idx.search(term, { expand: true });
+    var html = '';
+    for (var i = 0; i < Math.min(searchResults.length, 20); i++) {
+      html += formatSearchResultItem(searchResults[i], term);
     }
-
-    // Directly inserting formatted search result items without additional <li> creation
-    for (var i = 0; i < Math.min(results.length, MAX_ITEMS); i++) {
-      $searchResults.innerHTML += formatSearchResultItem(results[i], term.split(" "));
+    if (searchResults.length === 0) {
+      html = '<li>没有找到结果</li>';
     }
-}, 150));
-  window.addEventListener('click', function(e) {
-    if ($searchResults.style.display == "block" && !$searchResults.contains(e.target)) {
-      $searchResults.style.display = "none";
-    }
-  });
+    results.innerHTML = html;
+  }, 200));
 }
 
-
-if (document.readyState === "complete" ||
-    (document.readyState !== "loading" && !document.documentElement.doScroll)
-) {
+if (window.searchIndex) {
   initSearch();
 } else {
-  document.addEventListener("DOMContentLoaded", initSearch);
+  document.addEventListener('DOMContentLoaded', initSearch);
 }

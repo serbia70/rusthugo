@@ -20,7 +20,7 @@ include_title = true
 include_description = false
 include_path = false
 include_content = true
-index_format = "elasticlunr_json"
+index_format = "elasticlunr_javascript"
 
 [markdown]
 highlight_code = true
