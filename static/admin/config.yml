@@ -6,8 +6,8 @@ backend:
   auth_endpoint: auth
   auth_scope: repo
 
-site_url: https://rusthugo.vercel.app
-display_url: https://rusthugo.vercel.app
+site_url: https://serbia70.github.io/rusthugo
+display_url: https://serbia70.github.io/rusthugo
 
 media_folder: static/images
 public_folder: /images
@@ -23,10 +23,13 @@ collections:
     extension: "md"
     editor:
       preview: false
+    nested:
+      depth: 1
+      summary: "{{title}}"
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-      - { label: "草稿", name: "draft", widget: "boolean", default: false, hint: "开启后不会发布到网站" }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false, hint: "开启后不会发布" }
       - { label: "描述", name: "description", widget: "string", required: false }
       - label: "分类信息"
         name: "taxonomies"
@@ -40,3 +43,18 @@ collections:
         fields:
           - { label: "封面图", name: "cover_image", widget: "string", required: false }
       - { label: "正文", name: "body", widget: "markdown" }
+
+  - name: "settings"
+    label: "站点设置"
+    editor:
+      preview: false
+    files:
+      - label: "文章列表页"
+        name: "posts_index"
+        file: "content/posts/_index.md"
+        format: "toml-frontmatter"
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "排序方式", name: "sort_by", widget: "string", default: "date" }
+          - { label: "每页数量", name: "paginate_by", widget: "number", default: 10, value_type: "int" }
+          - { label: "模板", name: "template", widget: "string", default: "section.html" }
