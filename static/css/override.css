@@ -256,24 +256,14 @@ button#theme-toggle {
     font-size: 13px;
 }
 
-.entry-link {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-radius: var(--radius);
-    z-index: 1;
+/* Entry title links */
+.entry-header h2 a {
+    color: var(--primary);
+    text-decoration: none;
 }
 
-/* Lift interactive elements above .entry-link overlay */
-.post-entry .entry-header,
-.post-entry .entry-footer,
-.post-entry .entry-content,
-.post-entry .entry-cover,
-.post-entry a {
-    position: relative;
-    z-index: 2;
+.entry-header h2 a:hover {
+    color: var(--lv-accent);
 }
 
 .entry-cover {

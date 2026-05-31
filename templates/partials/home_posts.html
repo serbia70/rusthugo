@@ -1,4 +1,4 @@
-{# Home page post listing - with cover image support #}
+{# Home page post listing #}
 {% for page in paginator.pages %}
 {% if not page.extra.is_search_page %}
 <article class="post-entry">
@@ -6,7 +6,7 @@
   <div class="post-info">
   {% endif %}
   <header class="entry-header">
-      <h2>{{ page.title }}</h2>
+      <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
   </header>
   {% if page.summary %}
   <section class="entry-content">
@@ -19,10 +19,9 @@
   {% if page.extra.cover_image %}
   </div>
   <figure class="entry-cover">
-      <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
+      <a href="{{ page.permalink }}"><img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}"></a>
   </figure>
   {% endif %}
-  <a class="entry-link" aria-label="post link to {{ page.title }}" href="{{ page.permalink }}"></a>
 </article>
 {% endif %}
 {% endfor %}

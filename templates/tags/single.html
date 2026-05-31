@@ -24,7 +24,7 @@
   <div class="post-info">
   {% endif %}
   <header class="entry-header">
-      <h2>{{ page.title }}</h2>
+      <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
   </header>
   {% if page.summary %}
   <section class="entry-content">
@@ -40,7 +40,7 @@
       <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
   </figure>
   {% endif %}
-  <a class="entry-link" aria-label="post link to {{ page.title }}" href="{{ page.permalink }}"></a>
+  
 </article>
 {% endfor %}
 {% endblock %}
