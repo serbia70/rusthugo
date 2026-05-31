@@ -8,8 +8,6 @@ backend:
 
 site_url: https://rusthugo.vercel.app
 display_url: https://rusthugo.vercel.app
-logo_url: https://rusthugo.vercel.app/images/cover-hugo.svg
-
 locale: zh_Hans
 
 media_folder: static/images
