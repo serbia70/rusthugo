@@ -6,8 +6,6 @@ backend:
   auth_endpoint: auth
   auth_scope: repo
 
-publish_mode: editorial_workflow
-
 site_url: https://rusthugo.vercel.app
 display_url: https://rusthugo.vercel.app
 
