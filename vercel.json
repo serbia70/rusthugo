@@ -1,18 +1,6 @@
 {
-  "buildCommand": "zola build && cp -r api public/api",
-  "outputDirectory": "public",
   "rewrites": [
     { "source": "/auth", "destination": "/api/auth" },
     { "source": "/callback", "destination": "/api/callback" }
-  ],
-  "functions": {
-    "public/api/auth.js": {
-      "memory": 256,
-      "maxDuration": 10
-    },
-    "public/api/callback.js": {
-      "memory": 256,
-      "maxDuration": 10
-    }
-  }
+  ]
 }
