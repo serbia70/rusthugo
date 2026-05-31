@@ -45,6 +45,21 @@ function initSearch() {
     }
 
     var searchResults = idx.search(term, { expand: true });
+
+    // Fallback: substring search for CJK / short queries
+    if (searchResults.length === 0) {
+      var allDocs = idx.documentStore.docs;
+      var termLower = term.toLowerCase();
+      for (var ref in allDocs) {
+        var doc = allDocs[ref];
+        var title = (doc.title || '').toLowerCase();
+        var body = (doc.body || '').toLowerCase();
+        if (title.indexOf(termLower) !== -1 || body.indexOf(termLower) !== -1) {
+          searchResults.push({ ref: ref, doc: doc, score: 0 });
+        }
+      }
+    }
+
     var html = '';
     for (var i = 0; i < Math.min(searchResults.length, 20); i++) {
       html += formatSearchResultItem(searchResults[i], term);
