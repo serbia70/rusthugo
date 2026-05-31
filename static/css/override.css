@@ -659,6 +659,92 @@ body.has-series .main { max-width: none; }
     .post-layout__content { max-width: 100%; }
 }
 
+/* ==================== Mobile Panel (floating button + popup) ==================== */
+.mobile-panel-btn {
+    display: none;
+    position: fixed;
+    left: 30px;
+    bottom: 110px;
+    z-index: 99;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    box-shadow: var(--box-shadow-default);
+    transition: var(--lv-transition-shadow-transform);
+}
+
+.mobile-panel-btn:hover { transform: scale(var(--lv-scale)); }
+
+.mobile-panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--lv-overlay-bg);
+    z-index: 199;
+}
+
+.mobile-panel-overlay.is-open { display: block; }
+
+.mobile-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(85vw, 350px);
+    z-index: 200;
+    background: var(--theme);
+    border-right: 1px solid var(--border);
+    box-shadow: 4px 0 16px var(--lv-shadow-dark);
+    transform: translateX(-100%);
+    transition: transform var(--lv-transition-fast) ease;
+    overflow-y: auto;
+    padding: 24px 16px;
+    padding-top: 50px;
+}
+
+.mobile-panel.is-open { transform: translateX(0); }
+
+.mobile-panel-close {
+    display: flex;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.mobile-panel-section {
+    margin-bottom: 32px;
+}
+
+.mobile-panel-section .series-list { margin: 0; padding: 0; list-style: none; }
+.mobile-panel-section .series-item { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+.mobile-panel-section .series-item a { color: var(--secondary); font-size: 0.9rem; text-decoration: none; }
+.mobile-panel-section .series-current a { color: var(--primary); font-weight: 600; }
+
+.mobile-toc ul { padding-left: 16px; list-style: none; }
+.mobile-toc li { padding: 4px 0; font-size: 0.9rem; }
+.mobile-toc a { color: var(--secondary); text-decoration: none; }
+.mobile-toc a.active { color: var(--lv-accent); font-weight: 600; }
+
+@media screen and (max-width: 900px) {
+    .mobile-panel-btn { display: flex; }
+}
+
 /* ==================== Old Post Grid (deprecated, keep for reference) ==================== */
 .post-grid {
     width: calc(100% + (var(--gap) * 2));

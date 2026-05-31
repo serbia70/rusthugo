@@ -3,8 +3,10 @@
 
 {% if page.taxonomies.series and config.extra.papermod.show_series_sidebar | default(value=true) %}
   {% set has_series = true %}
+  {% set series_name = page.taxonomies.series[0] %}
 {% else %}
   {% set has_series = false %}
+  {% set series_name = "" %}
 {% endif %}
 {% set show_toc = config.extra.papermod.show_toc | default(value=true) %}
 
@@ -217,4 +219,51 @@
 })();
 </script>
 {% endif %}
+{% if has_series or page.toc %}
+<button id="mobile-panel-btn" class="mobile-panel-btn" aria-label="Toggle navigation" title="目录 & 系列">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+    </svg>
+</button>
+<div id="mobile-panel-overlay" class="mobile-panel-overlay"></div>
+<div id="mobile-panel" class="mobile-panel">
+    <button id="mobile-panel-close" class="mobile-panel-close" aria-label="Close">&times;</button>
+    {% if has_series %}
+    <div class="mobile-panel-section">
+        <div class="series-heading"><span class="series-icon">&#x1F4DA;</span><span class="series-title">系列文章</span></div>
+        <ol class="series-list">
+            {% set all_series = get_taxonomy(kind="series") %}
+            {% for t in all_series.items %}
+                {% if series_name == t.name %}
+                    {% for sp in t.pages %}
+                        <li class="series-item{% if sp.permalink == page.permalink %} series-current{% endif %}">
+                            <a href="{{ sp.permalink }}">{{ sp.title }}</a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+    {% if page.toc %}
+    <div class="mobile-panel-section">
+        <div class="series-heading"><span class="series-icon">&#x1F4DD;</span><span class="series-title">文章目录</span></div>
+        <nav class="mobile-toc"><ul>{% for h1 in page.toc %}<li><a href="#{{ h1.id }}">{{ h1.title }}</a>{% if h1.children %}<ul>{% for h2 in h1.children %}<li><a href="#{{ h2.id }}">{{ h2.title }}</a>{% if h2.children %}<ul>{% for h3 in h2.children %}<li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>{% endfor %}</ul>{% endif %}</li>{% endfor %}</ul>{% endif %}</li>{% endfor %}</ul></nav>
+    </div>
+    {% endif %}
+</div>
+<script>
+(function() {
+    var btn=document.getElementById('mobile-panel-btn'),panel=document.getElementById('mobile-panel'),overlay=document.getElementById('mobile-panel-overlay'),closeBtn=document.getElementById('mobile-panel-close');
+    if(!btn||!panel||!overlay)return;
+    function o(){panel.classList.add('is-open');overlay.classList.add('is-open');btn.classList.add('is-open');document.body.style.overflow='hidden';}
+    function c(){panel.classList.remove('is-open');overlay.classList.remove('is-open');btn.classList.remove('is-open');document.body.style.overflow='';}
+    btn.onclick=function(){panel.classList.contains('is-open')?c():o();};
+    overlay.onclick=c;closeBtn.onclick=c;
+    panel.querySelectorAll('a').forEach(function(a){a.onclick=c;});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});
+})();
+</script>
+{% endif %}
+
 {% endblock %}

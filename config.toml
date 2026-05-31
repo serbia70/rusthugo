@@ -39,7 +39,7 @@ show_reading_time = true
 show_word_count = true
 show_post_nav_links = true
 show_post_meta = true
-default_toc_open = false
+default_toc_open = true
 show_post_edit_button = false
 show_archive_year_count = true
 show_archive_month_count = true
@@ -47,9 +47,12 @@ date_format = "%Y-%m-%d"
 
 # Navigation
 navigation = [
-    { url = "$BASE_URL/archive", title = "归档" },
-    { url = "$BASE_URL/tags", title = "标签" },
-    { url = "$BASE_URL/search", title = "搜索" },
+    { url = "$BASE_URL/", title = "🏡 主页" },
+    { url = "$BASE_URL/search", title = "🔍 搜索" },
+    { url = "$BASE_URL/posts", title = "📚 文章" },
+    { url = "$BASE_URL/archive", title = "📈 归档" },
+    { url = "$BASE_URL/talk", title = "💬 说说" },
+    { url = "$BASE_URL/links", title = "🤝 友链" },
 ]
 
 # Home page
@@ -70,7 +73,7 @@ series_sidebar_layout = "popup"
 
 # Enhanced TOC
 show_toc = true
-toc_open = false
+toc_open = true
 toc_scroll_sync = true
 
 # Mac-style Code Block
