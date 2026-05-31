@@ -28,6 +28,9 @@
 
 <link rel="stylesheet" href="{{ get_url(path='css/styles.css') }}">
 <link rel="stylesheet" href="{{ get_url(path='css/override.css') }}">
+{% if config.extra.papermod.mac_code_block | default(value=true) %}
+<script src="{{ get_url(path='js/code-block.js') | safe }}" defer></script>
+{% endif %}
 
 {% block head_favicons %}
 {# /* Favicons */}

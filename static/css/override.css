@@ -396,6 +396,108 @@ body.post .main {
 .dark .series-toc a.active { color: var(--content); }
 .dark .toc li a:hover { color: var(--content); }
 
+/* ==================== Mac-style Code Block ==================== */
+.post-content code {
+    font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    margin: 0;
+    padding: 2px 5px;
+    font-size: 0.92rem;
+}
+
+.post-content pre code {
+    max-height: 40em;
+    margin-bottom: 2%;
+    font-size: 0.75em;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+}
+
+.post-content pre {
+    tab-size: 4;
+}
+
+.post-content .highlight,
+.post-content pre {
+    margin: 50px 0 0 0;
+    position: relative;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+    font-size: 0.75em;
+    line-height: 1.6;
+}
+
+/* Mac window dots */
+.mac-dots {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    background: var(--hljs-bg, #2e2e33);
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+}
+
+.mac-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    float: left;
+    margin: 8px 0 0 5px;
+}
+
+.mac-dot.red { background: #ff5f56; margin-left: 10px; }
+.mac-dot.yellow { background: #ffbd2e; }
+.mac-dot.green { background: #27c93f; }
+
+/* Language type label */
+.code-lang {
+    color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    top: -22px;
+    right: 80px;
+    font-size: 0.85em;
+    z-index: 1;
+}
+
+/* Copy button reposition for Mac style */
+.post-content .highlight .copy-code,
+.post-content pre .copy-code {
+    top: -22px;
+    right: 8px;
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.7);
+    background: unset;
+    border-radius: var(--radius);
+    padding: 0 5px;
+    font-size: 14px;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* Scrollbar for code blocks */
+.post-content :not(table) ::-webkit-scrollbar-thumb {
+    border: 5px solid var(--hljs-bg);
+}
+
+::-webkit-scrollbar-corner {
+    background-color: var(--hljs-bg);
+    border-radius: 4px;
+}
+
+/* iOS code font size fix */
+code {
+    text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
 @media screen and (max-width: 768px) {
     .post-grid.pg--toc-two {
         display: block;

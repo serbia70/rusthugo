@@ -7,8 +7,28 @@
     <span>
         Powered by
         <a href="https://www.getzola.org/" rel="noopener noreferrer" target="_blank">Zola</a> &
-        <a href="https://github.com/cydave/zola-theme-papermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/serbia70/rusthugo" rel="noopener" target="_blank">rusthugo</a>
     </span>
+    {% if config.extra.papermod.show_site_stats | default(value=false) %}
+    <div class="site-stats">
+        {% if config.extra.papermod.busuanzi_enable | default(value=false) %}
+        <span id="busuanzi_container_site_uv">
+            访客 <span id="busuanzi_value_site_uv"></span> 人
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        <span id="busuanzi_container_site_pv">
+            浏览 <span id="busuanzi_value_site_pv"></span> 次
+        </span>
+        <span>&nbsp;|&nbsp;</span>
+        {% endif %}
+        <span>运行 <span id="site-runtime"></span></span>
+    </div>
+    {% endif %}
+    {% if config.extra.papermod.filing_no %}
+    <div class="filing">
+        <a href="https://beian.miit.gov.cn/" rel="noopener noreferrer" target="_blank">{{ config.extra.papermod.filing_no }}</a>
+    </div>
+    {% endif %}
 </footer>
 
 {% if config.extra.papermod.show_scroll_to_top %}
@@ -131,6 +151,45 @@
             codeblock.parentNode.appendChild(copybutton);
         }
     });
+</script>
+{% endif %}
+
+{# Reading Progress Bar #}
+{% if config.extra.papermod.show_progress_bar | default(value=false) %}
+<script>
+(function() {
+    var bar = document.getElementById('progress-bar');
+    if (!bar) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function() {
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            bar.style.width = Math.min(progress, 100) + '%';
+            ticking = false;
+        });
+    }, { passive: true });
+})();
+</script>
+{% endif %}
+
+{# Site Statistics #}
+{% if config.extra.papermod.show_site_stats | default(value=false) %}
+{% if config.extra.papermod.busuanzi_enable | default(value=false) %}
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+{% endif %}
+<script>
+(function() {
+    var startYear = {{ config.extra.papermod.site_start_year | default(value=2025) }};
+    var startDate = new Date(startYear, 0, 1);
+    var now = new Date();
+    var days = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+    var el = document.getElementById('site-runtime');
+    if (el) el.textContent = days + ' 天';
+})();
 </script>
 {% endif %}
 
