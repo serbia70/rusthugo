@@ -139,9 +139,9 @@ Remove-Item -Recurse -Force "$env:ProgramData\Tailscale" -ErrorAction SilentlyCo
 
 ### 重启服务
 
+```
 net start Tailscale
-
-
+```
 
 
 
