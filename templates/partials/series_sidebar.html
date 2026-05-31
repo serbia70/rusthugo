@@ -3,7 +3,7 @@
   {% set series_name = page.taxonomies.series[0] %}
   {% set all_series = get_taxonomy(kind="series") %}
   {% for term in all_series.items %}
-    {% if term.name == series_name and term.page_count >= 2 %}
+    {% if term.name == series_name and term.page_count | default(value=term.pages | length) >= 2 %}
 
 <button id="series-toggle-btn" class="series-toggle-btn" aria-label="Toggle Series Navigation" title="Series" aria-expanded="false">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
     <div class="series-heading">
         <span class="series-icon">&#x1F4DA;</span>
         <span class="series-title">{{ term.name }}</span>
-        <span class="series-count">({{ term.page_count }})</span>
+        <span class="series-count">({{ term.page_count | default(value=term.pages | length) }})</span>
     </div>
 
     <ol class="series-list">
