@@ -1,3 +1,176 @@
+/* ==================== Global Design Improvements ==================== */
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+    --lv-font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --lv-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --lv-radius-sm: 4px;
+    --lv-radius-md: 8px;
+    --lv-transition-fast: 0.2s ease;
+    --lv-scale: 1.04;
+    --lv-scale-sm: 1.02;
+}
+
+body {
+    font-family: var(--lv-font-sans);
+}
+
+code, pre, code[class*="language-"], pre[class*="language-"] {
+    font-family: var(--lv-font-mono) !important;
+}
+
+/* ==================== Post Entry Cards ==================== */
+.post-entry {
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform var(--lv-transition-fast), box-shadow var(--lv-transition-fast);
+}
+
+.post-entry:hover {
+    transform: scale(var(--lv-scale));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.entry-header h2 {
+    font-size: 1.5rem;
+    margin: 0 0 8px 0;
+}
+
+.entry-content {
+    color: var(--secondary);
+    line-height: 1.7;
+    margin: 12px 0;
+}
+
+.entry-summary p {
+    margin: 0;
+}
+
+.entry-footer {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 12px;
+}
+
+/* Home info block */
+.first-entry {
+    margin-bottom: 40px;
+}
+
+.home-info .entry-content {
+    font-size: 1rem;
+}
+
+/* ==================== Post Single ==================== */
+.post-title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.post-header {
+    margin-bottom: 32px;
+}
+
+.breadcrumbs {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-bottom: 12px;
+}
+
+.breadcrumbs a {
+    color: var(--secondary);
+}
+
+/* ==================== Pagination ==================== */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+}
+
+.pagination a {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: transform var(--lv-transition-fast);
+}
+
+.pagination a:hover {
+    transform: scale(var(--lv-scale-sm));
+}
+
+/* ==================== Navigation ==================== */
+.nav {
+    font-family: var(--lv-font-sans);
+}
+
+#menu a {
+    transition: color var(--lv-transition-fast);
+}
+
+.logo a {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* ==================== Footer ==================== */
+.site-stats {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 8px;
+}
+
+.filing {
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.filing a {
+    color: var(--secondary);
+}
+
+/* ==================== Tags ==================== */
+.post-tags a {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: var(--lv-radius-sm);
+    background: var(--code-bg);
+    transition: transform var(--lv-transition-fast);
+    display: inline-block;
+}
+
+.post-tags a:hover {
+    transform: scale(var(--lv-scale-sm));
+}
+
+.terms-tags a {
+    padding: 6px 14px;
+    border-radius: var(--lv-radius-md);
+    background: var(--entry);
+    border: 1px solid var(--border);
+    transition: transform var(--lv-transition-fast);
+}
+
+.terms-tags a:hover {
+    transform: scale(var(--lv-scale-sm));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ==================== Dark Mode Refinements ==================== */
+.dark .post-entry:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dark .pagination a:hover {
+    background: var(--tertiary);
+}
+
 .post-content pre,
 .post-content pre code {
     border-radius: var(--radius);
