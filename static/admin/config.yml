@@ -26,6 +26,7 @@ collections:
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false, hint: "开启后不会发布到网站" }
       - { label: "描述", name: "description", widget: "string", required: false }
       - label: "分类信息"
         name: "taxonomies"
