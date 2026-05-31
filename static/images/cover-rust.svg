@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" rx="8" fill="#0d1117"/>
+  <text x="400" y="220" text-anchor="middle" fill="#f0f6fc" font-family="system-ui,sans-serif" font-size="48" font-weight="bold">Rust 开发笔记</text>
+  <text x="400" y="280" text-anchor="middle" fill="#8b949e" font-family="system-ui,sans-serif" font-size="24">零成本抽象 · 内存安全 · 高性能</text>
+  <rect x="330" y="360" width="140" height="60" rx="30" fill="#f74c00" opacity="0.8"/>
+  <text x="400" y="398" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="24" font-weight="bold">Rust</text>
+</svg>
