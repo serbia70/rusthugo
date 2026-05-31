@@ -3,10 +3,10 @@ sort_by = "date"
 paginate_by = 5
 +++
 
-欢迎光临小站 🥂
+欢迎光临小站🥂
 
-本站基于 Zola + PaperMod 主题构建，移植自 Hugo PaperMod 增强版。
-主要内容包括技术积累、读书笔记、生活感悟。
-
-熟悉 Rust Python Go Linux 等单词的拼写  
-喜欢的事情: 🏃 跑步 🎮 游戏 🎧 音乐 📺 动漫
+本站主要内容包括读书笔记、技术积累、生活感悟。如果能有哪些内容可以帮助到你，那也是极好的。</br>
+精通 CSS JavaScript PHP C C++ C# java Ruby Perl Python 等单词的拼写</br>
+熟悉 Windows Linux Mac Android IOS 等系统的开关机</br>
+喜欢的事情: 🏃‍♂️ 跑步 🎮️ 游戏 🎧 音乐 📺 动漫</br>
+文章内容及标题随着想法或者思路可能会改变, 如果发现某些文章的链接丢失, 请善用搜索
