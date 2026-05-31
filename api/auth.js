@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
 
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
-    res.status(500).send('OAUTH_CLIENT_ID not configured');
+    res.status(500).send('GITHUB_CLIENT_ID 环境变量未设置，请在 Vercel 中配置');
     return;
   }
 
