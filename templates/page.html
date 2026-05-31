@@ -10,13 +10,14 @@
 {% set show_series_sidebar = config.extra.papermod.show_series_sidebar | default(value=true) %}
 
 <article class="post-single">
-  <header class="post-header">
-      <div class="breadcrumbs">
-          <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
-          <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;&raquo;&nbsp;
-          <a href="{{ page.permalink }}">{{ page.title }}</a>
-      </div>
-      <h1 class="post-title">{{ page.title }}</h1>
+  <div class="breadcrumbs">
+      <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
+      <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;&raquo;&nbsp;
+      <a href="{{ page.permalink }}">{{ page.title }}</a>
+  </div>
+
+  <header class="entry-header">
+      <h1>{{ page.title }}</h1>
       {% if page.description %}
       <div class="post-description">
           {{ page.description }}
@@ -32,64 +33,131 @@
       {% endif %}
   </header>
 
+  {% if page.extra.cover_image %}
+  <figure class="entry-cover">
+      <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
+  </figure>
+  {% endif %}
+
   {% if config.extra.papermod.show_progress_bar | default(value=false) %}
   <div id="progress-bar" class="progress-bar"></div>
   {% endif %}
 
-  <div class="post-grid{% if has_series and show_series_sidebar %} pg--series-popup{% elif show_toc and page.toc %} pg--toc-one{% endif %}">
-    {% if has_series and show_series_sidebar %}
+  {% if has_series and show_series_sidebar %}
+  <div class="post-grid{% if show_toc %} pg--series-popup{% endif %}">
     <aside class="post-grid__series">
       {% include "partials/series_sidebar.html" %}
     </aside>
-    {% endif %}
-
     <div class="post-grid__content">
-      {% if not has_series and show_toc %}
-      <div class="toc--inline">
-        {% include "partials/toc.html" %}
-      </div>
+  {% endif %}
+
+  {% if show_toc and page.toc and not has_series %}
+  <div class="toc">
+      <details {% if config.extra.papermod.toc_open %} open{% endif %}>
+          <summary accesskey="c" title="(Alt + C)">
+              <span class="details">文章目录</span>
+          </summary>
+          <nav id="TableOfContents">
+              <ul>
+                  {% for h1 in page.toc %}
+                  <li>
+                      <a href="#{{ h1.id }}">{{ h1.title }}</a>
+                      {% if h1.children | length > 0 %}
+                      <ul>
+                      {% for h2 in h1.children %}
+                          <li>
+                              <a href="#{{ h2.id }}">{{ h2.title }}</a>
+                              {% if h2.children | length > 0 %}
+                              <ul>
+                                  {% for h3 in h2.children %}
+                                  <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+                                  {% endfor %}
+                              </ul>
+                              {% endif %}
+                          </li>
+                      {% endfor %}
+                      </ul>
+                      {% endif %}
+                  </li>
+                  {% endfor %}
+              </ul>
+          </nav>
+      </details>
+  </div>
+  {% endif %}
+
+  {% if page.content %}
+  <div class="post-content">
+      {{ page.content | safe }}
+  </div>
+  {% endif %}
+
+  <footer class="post-footer">
+      {% if page.taxonomies.tags %}
+      <ul class="post-tags">
+          {% for tag in page.taxonomies.tags %}
+          {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
+          <li><a href="{{ tag_url }}">{{ tag }}</a></li>
+          {% endfor %}
+      </ul>
       {% endif %}
 
-      {% if page.content %}
-      <div id="single-content" class="post-content">
-          {{ page.content | safe }}
-      </div>
+      {% if config.extra.papermod.show_reward | default(value=false) %}
+      {% include "partials/reward.html" %}
       {% endif %}
 
-      <footer class="post-footer">
-          {% if page.taxonomies.tags %}
-          <ul class="post-tags">
-              {% for tag in page.taxonomies.tags %}
-              {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
-              <li><a href="{{ tag_url }}">{{ tag }}</a></li>
-              {% endfor %}
-          </ul>
-          {% endif %}
+      {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
+      {% include "partials/post_nav_links.html" %}
+      {% endif %}
 
-          {% if config.extra.papermod.show_reward | default(value=false) %}
-          {% include "partials/reward.html" %}
-          {% endif %}
+      {% if config.extra.papermod.show_comments | default(value=false) %}
+      {% include "partials/comments.html" %}
+      {% endif %}
+  </footer>
 
-          {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
-          {% include "partials/post_nav_links.html" %}
-          {% endif %}
-
-          {% if config.extra.papermod.show_comments | default(value=false) %}
-          {% include "partials/comments.html" %}
-          {% endif %}
-      </footer>
-    </div>
-
+  {% if has_series and show_series_sidebar %}
+    </div>{# post-grid__content #}
     {% if show_toc and page.toc %}
     <aside class="post-grid__toc">
-      {% include "partials/toc.html" %}
+      <div class="toc">
+          <details {% if config.extra.papermod.toc_open %} open{% endif %}>
+              <summary accesskey="c" title="(Alt + C)">
+                  <span class="details">文章目录</span>
+              </summary>
+              <div class="inner">
+                  <ul>
+                      {% for h1 in page.toc %}
+                      <li>
+                          <a href="#{{ h1.id }}">{{ h1.title }}</a>
+                          {% if h1.children | length > 0 %}
+                          <ul>
+                          {% for h2 in h1.children %}
+                              <li>
+                                  <a href="#{{ h2.id }}">{{ h2.title }}</a>
+                                  {% if h2.children | length > 0 %}
+                                  <ul>
+                                      {% for h3 in h2.children %}
+                                      <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+                                      {% endfor %}
+                                  </ul>
+                                  {% endif %}
+                              </li>
+                          {% endfor %}
+                          </ul>
+                          {% endif %}
+                      </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+          </details>
+      </div>
     </aside>
     {% endif %}
-  </div>
+  </div>{# post-grid #}
+  {% endif %}
 
 </article>
 
-{# Responsive layout switching for series + TOC #}
 {% if has_series and show_series_sidebar %}
 <script>
 (function() {
@@ -98,7 +166,6 @@
 
     function updateLayout() {
         var w = window.innerWidth;
-        // CSS custom properties for layout calculation
         var seriesWidth = 260;
         var articleWidth = Math.min(720, w - 40);
         var tocWidth = 220;
@@ -118,7 +185,6 @@
         }
     }
 
-    // Set CSS variables
     document.documentElement.style.setProperty('--series-width', '260px');
     document.documentElement.style.setProperty('--article-width', '720px');
     document.documentElement.style.setProperty('--toc-width', '220px');
@@ -126,6 +192,76 @@
 
     updateLayout();
     window.addEventListener('resize', updateLayout);
+})();
+</script>
+
+<script>
+(function() {
+    var headings = Array.from(document.querySelectorAll(
+        '.post-content h1[id],.post-content h2[id],.post-content h3[id],.post-content h4[id],.post-content h5[id],.post-content h6[id]'
+    ));
+    if (headings.length === 0) return;
+
+    var headerHeightRaw = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim();
+    var headerHeight = Number.parseInt(headerHeightRaw, 10) || 60;
+    var threshold = headerHeight + 20;
+
+    var links = Array.from(document.querySelectorAll(
+        '.toc a[href^="#"], .series-toc a[href^="#"]'
+    ));
+    if (links.length === 0) return;
+
+    var linkMap = new Map();
+    links.forEach(function(link) {
+        var href = link.getAttribute('href') || '';
+        if (!href.startsWith('#')) return;
+        var id = href.slice(1);
+        try { id = decodeURIComponent(id); } catch(e) {}
+        id = id.trim().toLowerCase();
+        if (!id) return;
+        if (!linkMap.has(id)) linkMap.set(id, []);
+        linkMap.get(id).push(link);
+    });
+
+    var activeId = null;
+
+    function setActive(id) {
+        if (!id) return;
+        var next = id.trim().toLowerCase();
+        if (next === activeId) return;
+        if (activeId && linkMap.has(activeId)) {
+            linkMap.get(activeId).forEach(function(a) { a.classList.remove('active'); });
+        }
+        activeId = next;
+        if (linkMap.has(activeId)) {
+            linkMap.get(activeId).forEach(function(a) { a.classList.add('active'); });
+        }
+    }
+
+    function computeActiveId() {
+        var current = headings[0].id;
+        for (var i = 0; i < headings.length; i++) {
+            if (headings[i].getBoundingClientRect().top <= threshold) {
+                current = headings[i].id;
+            } else {
+                break;
+            }
+        }
+        return current;
+    }
+
+    var ticking = false;
+    function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function() {
+            setActive(computeActiveId());
+            ticking = false;
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    setActive(computeActiveId());
 })();
 </script>
 {% endif %}
