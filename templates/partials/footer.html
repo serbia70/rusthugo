@@ -120,7 +120,15 @@
             if ('clipboard' in navigator) {
                 var content = codeblock.textContent;
                 if(codeblock.firstChild.tagName == 'TABLE') {
-                    content = Array(...codeblock.firstChild.getElementsByTagName('span')).map((span) => { return span.textContent; }).join('');
+                    var rows = codeblock.firstChild.rows;
+                    content = '';
+                    for (var r = 0; r < rows.length; r++) {
+                        var cells = rows[r].cells;
+                        // Get last cell (code, not line number)
+                        var codeCell = cells[cells.length - 1];
+                        if (codeCell) content += codeCell.textContent + '\n';
+                    }
+                    content = content.replace(/\n$/, '');
                 }
                 navigator.clipboard.writeText(content);
                 copyingDone();
