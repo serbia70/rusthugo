@@ -2,8 +2,7 @@
 title = "Example post 1"
 date = "2023-04-07"
 
-[taxonomies]
-tags = ["showcase"]
+taxonomies.tags = ["showcase"]
 +++
 
 

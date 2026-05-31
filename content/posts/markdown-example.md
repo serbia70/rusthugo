@@ -2,12 +2,10 @@
 title = "Markdown 写作示例"
 date = 2024-02-20
 
-[taxonomies]
-tags = ["Zola", "Markdown", "教程"]
-series = ["博客建站"]
+taxonomies.tags = ["Zola", "Markdown", "教程"]
+taxonomies.series = ["博客建站"]
 
-[extra]
-cover_image = "/images/cover-rust.svg"
+extra.cover_image = "/images/cover-rust.svg"
 +++
 
 一篇 Markdown 语法示例文章，展示 Zola 的渲染效果。

@@ -12,7 +12,6 @@ readers with a preview.
 ### TOML
 
 ```toml
-[extra]
 
 [extra.papermod]
 title = "PaperMod"

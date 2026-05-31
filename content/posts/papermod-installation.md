@@ -1,13 +1,9 @@
 +++
 title = "PaperMod 主题安装与配置"
 date = 2024-03-15
-
-[taxonomies]
-tags = ["PaperMod", "Zola"]
-series = ["博客建站"]
-
-[extra]
-cover_image = "/images/cover-hugo.svg"
+taxonomies.tags = ["PaperMod", "Zola"]
+taxonomies.series = ["博客建站"]
+extra.cover_image = "/images/cover-hugo.svg"
 +++
 
 记录 Zola + PaperMod 主题的安装、配置和自定义过程。
