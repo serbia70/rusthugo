@@ -1,9 +1,10 @@
-{# Series Sidebar - Left sidebar navigation, no TOC #}
+{# Series Sidebar - shows ALL series this article belongs to #}
 {% if page.taxonomies.series %}
-  {% set series_name = page.taxonomies.series[0] %}
   {% set all_series = get_taxonomy(kind="series") %}
+  {% set article_series = page.taxonomies.series %}
+
   {% for term in all_series.items %}
-    {% if term.name == series_name and term.page_count | default(value=term.pages | length) >= 2 %}
+    {% if article_series is containing(term.name) and term.page_count | default(value=term.pages | length) >= 2 %}
 
 <nav class="series" aria-label="Series">
     <div class="series-heading">
