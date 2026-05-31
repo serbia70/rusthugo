@@ -1,6 +1,8 @@
 /* ==================== lvbibir Custom CSS Variables ==================== */
 :root {
     --footer-height: 90px;
+    --nav-width: 1024px;
+    --main-width: 800px;
     --article-width: 800px;
     --toc-width: 250px;
     --series-width: 350px;
