@@ -1,10 +1,19 @@
 {% extends "index.html" %}
 {% block main %}
+
+{% if page.taxonomies.series %}
+  {% set has_series = true %}
+{% else %}
+  {% set has_series = false %}
+{% endif %}
+{% set show_toc = config.extra.papermod.show_toc | default(value=true) %}
+{% set show_series_sidebar = config.extra.papermod.show_series_sidebar | default(value=true) %}
+
 <article class="post-single">
   <header class="post-header">
       <div class="breadcrumbs">
-          <a href="{{ config.base_url }}">Home</a>&nbsp;»&nbsp;
-          <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;»&nbsp;
+          <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
+          <a href="{{ get_url(path='@/posts/_index.md') }}">Posts</a>&nbsp;&raquo;&nbsp;
           <a href="{{ page.permalink }}">{{ page.title }}</a>
       </div>
       <h1 class="post-title">{{ page.title }}</h1>
@@ -23,34 +32,101 @@
       {% endif %}
   </header>
 
-  {% if config.extra.papermod.show_toc | default(value=true) %}
-  {% include "partials/toc.html" %}
+  {% if config.extra.papermod.show_progress_bar | default(value=false) %}
+  <div id="progress-bar" class="progress-bar"></div>
   {% endif %}
 
-  {% if page.content %}
-  <div class="post-content">
-      {{ page.content | safe }}
-  </div>
-  {% endif %}
+  <div class="post-grid{% if has_series and show_series_sidebar %} pg--series-popup{% elif show_toc and page.toc %} pg--toc-one{% endif %}">
+    {% if has_series and show_series_sidebar %}
+    <aside class="post-grid__series">
+      {% include "partials/series_sidebar.html" %}
+    </aside>
+    {% endif %}
 
-  <footer class="post-footer">
-      {% if page.taxonomies.tags %}
-      <ul class="post-tags">
-          {% for tag in page.taxonomies.tags %}
-          {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
-          <li><a href="{{ tag_url }}">{{ tag }}</a></li>
-          {% endfor %}
-      </ul>
+    <div class="post-grid__content">
+      {% if not has_series and show_toc %}
+      <div class="toc--inline">
+        {% include "partials/toc.html" %}
+      </div>
       {% endif %}
 
-    {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
-    {% include "partials/post_nav_links.html" %}
+      {% if page.content %}
+      <div id="single-content" class="post-content">
+          {{ page.content | safe }}
+      </div>
+      {% endif %}
+
+      <footer class="post-footer">
+          {% if page.taxonomies.tags %}
+          <ul class="post-tags">
+              {% for tag in page.taxonomies.tags %}
+              {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
+              <li><a href="{{ tag_url }}">{{ tag }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if config.extra.papermod.show_reward | default(value=false) %}
+          {% include "partials/reward.html" %}
+          {% endif %}
+
+          {% if config.extra.papermod.show_post_nav_links | default(value=true) %}
+          {% include "partials/post_nav_links.html" %}
+          {% endif %}
+
+          {% if config.extra.papermod.show_comments | default(value=false) %}
+          {% include "partials/comments.html" %}
+          {% endif %}
+      </footer>
+    </div>
+
+    {% if show_toc and page.toc and (has_series or true) %}
+    <aside class="post-grid__toc">
+      {% include "partials/toc.html" %}
+    </aside>
     {% endif %}
-    {# TODO #}
-    {#- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
-    {{- partial "share_icons.html" . -}}
-    {{- end #}
-  </footer>
+  </div>
 
 </article>
+
+{# Responsive layout switching for series + TOC #}
+{% if has_series and show_series_sidebar %}
+<script>
+(function() {
+    var grid = document.querySelector('.post-grid');
+    if (!grid) return;
+
+    function updateLayout() {
+        var w = window.innerWidth;
+        // CSS custom properties for layout calculation
+        var seriesWidth = 260;
+        var articleWidth = Math.min(720, w - 40);
+        var tocWidth = 220;
+        var contentGap = 24;
+
+        var totalTwoCol = seriesWidth + contentGap + articleWidth + 20;
+        var totalThreeCol = seriesWidth + contentGap + articleWidth + contentGap + tocWidth + 20;
+
+        grid.classList.remove('pg--series-popup', 'pg--series-two', 'pg--series-three');
+
+        if (totalThreeCol <= w) {
+            grid.classList.add('pg--series-three');
+        } else if (totalTwoCol <= w) {
+            grid.classList.add('pg--series-two');
+        } else {
+            grid.classList.add('pg--series-popup');
+        }
+    }
+
+    // Set CSS variables
+    document.documentElement.style.setProperty('--series-width', '260px');
+    document.documentElement.style.setProperty('--article-width', '720px');
+    document.documentElement.style.setProperty('--toc-width', '220px');
+    document.documentElement.style.setProperty('--content-gap', '24px');
+
+    updateLayout();
+    window.addEventListener('resize', updateLayout);
+})();
+</script>
+{% endif %}
 {% endblock %}

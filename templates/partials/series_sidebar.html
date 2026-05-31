@@ -1,0 +1,100 @@
+{# Series Sidebar - Ported from lvbibir Hugo PaperMod #}
+{% if page.taxonomies.series %}
+  {% set series_name = page.taxonomies.series[0] %}
+  {% set all_series = get_taxonomy(kind="series") %}
+  {% for term in all_series.items %}
+    {% if term.name == series_name and term.page_count >= 2 %}
+
+<button id="series-toggle-btn" class="series-toggle-btn" aria-label="Toggle Series Navigation" title="Series" aria-expanded="false">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+    </svg>
+</button>
+
+<div id="series-overlay" class="series-overlay"></div>
+
+<nav id="series-container" class="series" aria-label="Series">
+    <button id="series-close-btn" class="series-close-btn" aria-label="Close Series Navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+    </button>
+    <div class="series-heading">
+        <span class="series-icon">&#x1F4DA;</span>
+        <span class="series-title">{{ term.name }}</span>
+        <span class="series-count">({{ term.page_count }})</span>
+    </div>
+
+    <ol class="series-list">
+        {% for series_page in term.pages %}
+          {% set is_current = series_page.permalink == page.permalink %}
+          <li class="series-item{% if is_current %} series-current{% endif %}">
+            <a href="{{ series_page.permalink }}" title="{{ series_page.title }}">{{ series_page.title }}</a>
+            {% if is_current and config.extra.papermod.show_toc | default(value=true) and page.toc %}
+            <div class="series-toc">
+                {% include "partials/toc_body.html" %}
+            </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+    </ol>
+</nav>
+
+<script>
+(function() {
+    var container = document.getElementById("series-container");
+    var toggleBtn = document.getElementById("series-toggle-btn");
+    var closeBtn = document.getElementById("series-close-btn");
+    var overlay = document.getElementById("series-overlay");
+    if (!container || !toggleBtn) return;
+
+    function isPopupMode() {
+        var grid = document.querySelector(".post-grid");
+        return !!(grid && grid.classList.contains("pg--series-popup"));
+    }
+
+    function openSeries() {
+        if (!isPopupMode()) return;
+        container.classList.add("is-open");
+        if (overlay) overlay.classList.add("is-open");
+        toggleBtn.classList.add("is-open");
+        toggleBtn.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeSeries() {
+        container.classList.remove("is-open");
+        if (overlay) overlay.classList.remove("is-open");
+        toggleBtn.classList.remove("is-open");
+        toggleBtn.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+    }
+
+    function toggleSeries() {
+        if (container.classList.contains("is-open")) {
+            closeSeries();
+        } else {
+            openSeries();
+        }
+    }
+
+    toggleBtn.addEventListener("click", toggleSeries);
+    if (closeBtn) closeBtn.addEventListener("click", closeSeries);
+    if (overlay) overlay.addEventListener("click", closeSeries);
+
+    container.querySelectorAll(".series-list a").forEach(function(link) {
+        link.addEventListener("click", function() { closeSeries(); });
+    });
+    container.querySelectorAll(".series-toc a[href^=\"#\"]").forEach(function(link) {
+        link.addEventListener("click", function() { closeSeries(); });
+    });
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") closeSeries();
+    });
+})();
+</script>
+
+    {% endif %}
+  {% endfor %}
+{% endif %}

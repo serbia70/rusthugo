@@ -1,36 +1,87 @@
+{# Enhanced TOC - Ported from lvbibir Hugo PaperMod #}
 {% if page.toc %}
-{% set expand_toc = page.extra.toc_open | default(value=config.extra.papermod.default_toc_open) %}
-<div class="toc">
-    <details {% if expand_toc == true %} open{% endif %}>
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner">
-            <ul>
-                {% for h1 in page.toc %}
-                <li>
-                    <a href="#{{ h1.id }}" aria-label="{{ h1.title }}">{{ h1.title }}</a>
-                    {% if h1.children | length > 0 %}
-                    <ul>
-                    {% for h2 in h1.children %}
-                        <li>
-                            <a href="#{{ h2.id }}" aria-label="{{ h2.title }}">{{ h2.title }}</a>
-                            {% if h2.children | length > 0 %}
-                            <ul>
-                                {% for h3 in h2.children %}
-                                <li><a href="#{{ h3.id }}" aria-label="{{ h3.title }}">{{ h3.title }}</a></li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </details>
+{% set toc_open = page.extra.toc_open | default(value=config.extra.papermod.toc_open | default(value=false)) %}
+<div class="toc-container">
+    <div class="toc">
+        <details {% if toc_open == true %} open{% endif %}>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">{% if lang == "zh-cn" %}目录{% else %}Table of Contents{% endif %}</span>
+            </summary>
+            {% include "partials/toc_body.html" %}
+        </details>
+    </div>
 </div>
+
+<script>
+(function() {
+    var headings = Array.from(document.querySelectorAll(
+        '#single-content h1[id],#single-content h2[id],#single-content h3[id],#single-content h4[id],#single-content h5[id],#single-content h6[id]'
+    ));
+    if (headings.length === 0) return;
+
+    var headerHeightRaw = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim();
+    var headerHeight = Number.parseInt(headerHeightRaw, 10) || 60;
+    var threshold = headerHeight + 20;
+
+    var links = Array.from(document.querySelectorAll(
+        '.toc .inner a[href^="#"], .series-toc .inner a[href^="#"]'
+    ));
+    if (links.length === 0) return;
+
+    var linkMap = new Map();
+    links.forEach(function(link) {
+        var href = link.getAttribute('href') || '';
+        if (!href.startsWith('#')) return;
+        var id = href.slice(1);
+        try { id = decodeURIComponent(id); } catch(e) {}
+        id = id.trim().toLowerCase();
+        if (!id) return;
+        if (!linkMap.has(id)) linkMap.set(id, []);
+        linkMap.get(id).push(link);
+    });
+
+    var activeId = null;
+
+    function setActive(id) {
+        if (!id) return;
+        var next = id.trim().toLowerCase();
+        if (next === activeId) return;
+        if (activeId && linkMap.has(activeId)) {
+            linkMap.get(activeId).forEach(function(a) { a.classList.remove('active'); });
+        }
+        activeId = next;
+        if (linkMap.has(activeId)) {
+            linkMap.get(activeId).forEach(function(a) { a.classList.add('active'); });
+        }
+    }
+
+    function computeActiveId() {
+        var current = headings[0].id;
+        for (var i = 0; i < headings.length; i++) {
+            if (headings[i].getBoundingClientRect().top <= threshold) {
+                current = headings[i].id;
+            } else {
+                break;
+            }
+        }
+        return current;
+    }
+
+    var ticking = false;
+    function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function() {
+            setActive(computeActiveId());
+            ticking = false;
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('hashchange', onScroll, { passive: true });
+
+    setActive(computeActiveId());
+})();
+</script>
 {% endif %}
