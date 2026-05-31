@@ -5,7 +5,7 @@
     </header>
     <div class="entry-content">
         {% block home_entry_content %}
-        {{ config.extra.papermod.home_content | markdown(inline=true) | safe }}
+        {{ config.extra.papermod.home_content | safe }}
         {% endblock %}
     </div>
     <footer class="entry-footer">
