@@ -3,8 +3,7 @@ module.exports = async function handler(req, res) {
   const { code } = req.query;
 
   if (!code) {
-    const msg = encodeURIComponent('授权失败：缺少 code 参数');
-    res.writeHead(302, { Location: `/admin/#error=${msg}` });
+    res.writeHead(302, { Location: '/admin/#error=missing_code' });
     res.end();
     return;
   }
@@ -26,30 +25,47 @@ module.exports = async function handler(req, res) {
     const tokenData = await tokenRes.json();
 
     if (tokenData.error) {
-      const msg = encodeURIComponent(`GitHub 认证失败：${tokenData.error_description || tokenData.error}`);
-      res.writeHead(302, { Location: `/admin/#error=${msg}` });
+      res.writeHead(302, { Location: `/admin/#error=${encodeURIComponent(tokenData.error_description || tokenData.error)}` });
       res.end();
       return;
     }
 
+    // Pass token via URL hash AND postMessage (both methods)
+    const token = tokenData.access_token;
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(`<!DOCTYPE html>
-<html><body>
+<html><head><title>授权成功</title></head><body>
+<p style="text-align:center;margin-top:40px;font-family:sans-serif;">授权成功，正在跳转...</p>
 <script>
 (function() {
-  window.opener.postMessage({
-    type: 'authorization',
-    provider: 'github',
-    token: '${tokenData.access_token}'
-  }, '*');
-  window.close();
+  var token = '${token}';
+  // Method 1: postMessage to opener window
+  if (window.opener) {
+    window.opener.postMessage({
+      type: 'authorization',
+      provider: 'github',
+      token: token
+    }, window.location.origin);
+    window.opener.postMessage({
+      type: 'authorization',
+      provider: 'github',
+      token: token
+    }, '*');
+  }
+  // Method 2: redirect opener
+  setTimeout(function() {
+    if (window.opener) {
+      window.opener.location.href = '/admin/#access_token=${token}&provider=github';
+      window.close();
+    } else {
+      window.location.href = '/admin/#access_token=${token}&provider=github';
+    }
+  }, 1000);
 })();
 </script>
-<p>授权成功，窗口即将关闭...</p>
 </body></html>`);
   } catch (err) {
-    const msg = encodeURIComponent('服务器错误：' + err.message);
-    res.writeHead(302, { Location: `/admin/#error=${msg}` });
+    res.writeHead(302, { Location: `/admin/#error=${encodeURIComponent('服务器错误: ' + err.message)}` });
     res.end();
   }
 };

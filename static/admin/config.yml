@@ -3,6 +3,14 @@ backend:
   repo: serbia70/rusthugo
   branch: main
   base_url: https://rusthugo.vercel.app
+  auth_endpoint: auth
+  auth_scope: repo
+
+site_url: https://rusthugo.vercel.app
+display_url: https://rusthugo.vercel.app
+logo_url: https://rusthugo.vercel.app/images/cover-hugo.svg
+
+locale: zh_Hans
 
 media_folder: static/images
 public_folder: /images
@@ -10,6 +18,7 @@ public_folder: /images
 collections:
   - name: "posts"
     label: "博客文章"
+    label_singular: "文章"
     folder: "content/posts"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
@@ -17,10 +26,11 @@ collections:
       preview: false
     fields:
       - { label: "标题", name: "title", widget: "string" }
-      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "标签", name: "tags", widget: "list", default: [] }
       - { label: "系列", name: "series", widget: "list", required: false, default: [] }
       - { label: "描述", name: "description", widget: "string", required: false }
+      - { label: "封面图", name: "cover_image", widget: "string", required: false, hint: "放在 /static/images/ 下，如 /images/cover.svg" }
       - { label: "正文", name: "body", widget: "markdown" }
 
   - name: "pages"
