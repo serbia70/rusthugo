@@ -2,7 +2,7 @@ backend:
   name: github
   repo: serbia70/rusthugo
   branch: main
-  base_url: https://decapcms-oauth.vercel.app
+  base_url: https://rusthugo.vercel.app
 
 media_folder: static/images
 public_folder: /images
