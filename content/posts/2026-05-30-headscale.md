@@ -120,6 +120,13 @@ journalctl -u headscale -n 30 --no-pager
 
 # windows
 
+## 重启
+systemctl restart headscale
+
+## 检查
+
+systemctl status headscale
+
 ## 管理员 PowerShell
 
 ### 彻底停止
