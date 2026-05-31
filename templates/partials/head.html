@@ -46,8 +46,8 @@
 #}
 {% endblock %}
 
-{% if config.generate_feeds %}
-{% for feed_filename in config.feed_filenames %}
+{% if config.generate_feeds | default(value=true) %}
+{% for feed_filename in config.feed_filenames | default(value=["atom.xml"]) %}
 <link rel="alternate" type={% if feed_filename == "atom.xml" %}"application/atom+xml"{% else %}"application/rss+xml"{% endif %} title="RSS" href="{{ get_url(path=feed_filename) | safe }}">
 {% endfor %}
 {% endif %}
