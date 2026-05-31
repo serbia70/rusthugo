@@ -1,14 +1,6 @@
 {% extends "index.html" %}
 {% block main %}
 
-{% if page.taxonomies.series %}
-  {% set has_series = true %}
-{% else %}
-  {% set has_series = false %}
-{% endif %}
-{% set show_toc = config.extra.papermod.show_toc | default(value=true) %}
-{% set show_series_sidebar = config.extra.papermod.show_series_sidebar | default(value=true) %}
-
 <article class="post-single">
   <div class="breadcrumbs">
       <a href="{{ config.base_url }}">Home</a>&nbsp;&raquo;&nbsp;
@@ -19,22 +11,17 @@
   <header class="entry-header">
       <h1>{{ page.title }}</h1>
       {% if page.description %}
-      <div class="post-description">
-          {{ page.description }}
-      </div>
+      <div class="post-description">{{ page.description }}</div>
       {% endif %}
       {% if config.extra.papermod.show_post_meta | default(value=true) %}
       <div class="post-meta">
       {% include "partials/post_meta.html" %}
-      {% if config.extra.papermod.show_post_edit_button %}
-          {% include "partials/edit_post.html" %}
-      {% endif %}
       </div>
       {% endif %}
   </header>
 
   {% if page.extra.cover_image %}
-  <figure class="entry-cover">
+  <figure class="entry-cover1">
       <img loading="lazy" src="{{ page.extra.cover_image }}" alt="{{ page.title }}">
   </figure>
   {% endif %}
@@ -43,15 +30,7 @@
   <div id="progress-bar" class="progress-bar"></div>
   {% endif %}
 
-  {% if has_series and show_series_sidebar %}
-  <div class="post-grid{% if show_toc %} pg--series-popup{% endif %}">
-    <aside class="post-grid__series">
-      {% include "partials/series_sidebar.html" %}
-    </aside>
-    <div class="post-grid__content">
-  {% endif %}
-
-  {% if show_toc and page.toc and not has_series %}
+  {% if config.extra.papermod.show_toc | default(value=true) and page.toc %}
   <div class="toc">
       <details {% if config.extra.papermod.toc_open %} open{% endif %}>
           <summary accesskey="c" title="(Alt + C)">
@@ -114,87 +93,9 @@
       {% include "partials/comments.html" %}
       {% endif %}
   </footer>
-
-  {% if has_series and show_series_sidebar %}
-    </div>{# post-grid__content #}
-    {% if show_toc and page.toc %}
-    <aside class="post-grid__toc">
-      <div class="toc">
-          <details {% if config.extra.papermod.toc_open %} open{% endif %}>
-              <summary accesskey="c" title="(Alt + C)">
-                  <span class="details">文章目录</span>
-              </summary>
-              <div class="inner">
-                  <ul>
-                      {% for h1 in page.toc %}
-                      <li>
-                          <a href="#{{ h1.id }}">{{ h1.title }}</a>
-                          {% if h1.children | length > 0 %}
-                          <ul>
-                          {% for h2 in h1.children %}
-                              <li>
-                                  <a href="#{{ h2.id }}">{{ h2.title }}</a>
-                                  {% if h2.children | length > 0 %}
-                                  <ul>
-                                      {% for h3 in h2.children %}
-                                      <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
-                                      {% endfor %}
-                                  </ul>
-                                  {% endif %}
-                              </li>
-                          {% endfor %}
-                          </ul>
-                          {% endif %}
-                      </li>
-                      {% endfor %}
-                  </ul>
-              </div>
-          </details>
-      </div>
-    </aside>
-    {% endif %}
-  </div>{# post-grid #}
-  {% endif %}
-
 </article>
 
-{% if has_series and show_series_sidebar %}
-<script>
-(function() {
-    var grid = document.querySelector('.post-grid');
-    if (!grid) return;
-
-    function updateLayout() {
-        var w = window.innerWidth;
-        var seriesWidth = 260;
-        var articleWidth = Math.min(800, w - 40);
-        var tocWidth = 220;
-        var contentGap = 24;
-
-        var totalTwoCol = seriesWidth + contentGap + articleWidth + 20;
-        var totalThreeCol = seriesWidth + contentGap + articleWidth + contentGap + tocWidth + 20;
-
-        grid.classList.remove('pg--series-popup', 'pg--series-two', 'pg--series-three');
-
-        if (totalThreeCol <= w) {
-            grid.classList.add('pg--series-three');
-        } else if (totalTwoCol <= w) {
-            grid.classList.add('pg--series-two');
-        } else {
-            grid.classList.add('pg--series-popup');
-        }
-    }
-
-    document.documentElement.style.setProperty('--series-width', '260px');
-    document.documentElement.style.setProperty('--article-width', '720px');
-    document.documentElement.style.setProperty('--toc-width', '220px');
-    document.documentElement.style.setProperty('--content-gap', '24px');
-
-    updateLayout();
-    window.addEventListener('resize', updateLayout);
-})();
-</script>
-
+{% if config.extra.papermod.show_toc | default(value=true) and page.toc %}
 <script>
 (function() {
     var headings = Array.from(document.querySelectorAll(
@@ -206,9 +107,7 @@
     var headerHeight = Number.parseInt(headerHeightRaw, 10) || 60;
     var threshold = headerHeight + 20;
 
-    var links = Array.from(document.querySelectorAll(
-        '.toc a[href^="#"], .series-toc a[href^="#"]'
-    ));
+    var links = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
     if (links.length === 0) return;
 
     var linkMap = new Map();
@@ -224,7 +123,6 @@
     });
 
     var activeId = null;
-
     function setActive(id) {
         if (!id) return;
         var next = id.trim().toLowerCase();
@@ -243,24 +141,21 @@
         for (var i = 0; i < headings.length; i++) {
             if (headings[i].getBoundingClientRect().top <= threshold) {
                 current = headings[i].id;
-            } else {
-                break;
-            }
+            } else { break; }
         }
         return current;
     }
 
     var ticking = false;
-    function onScroll() {
+    window.addEventListener('scroll', function() {
         if (ticking) return;
         ticking = true;
         window.requestAnimationFrame(function() {
             setActive(computeActiveId());
             ticking = false;
         });
-    }
+    }, { passive: true });
 
-    window.addEventListener('scroll', onScroll, { passive: true });
     setActive(computeActiveId());
 })();
 </script>
