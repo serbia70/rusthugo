@@ -648,10 +648,6 @@ body.has-series .main { max-width: none; }
     margin: 0;
 }
 
-@media screen and (max-width: 1200px) {
-    .post-layout__toc { display: none; }
-}
-
 @media screen and (max-width: 900px) {
     .post-layout { flex-direction: column; padding: 0; }
     .post-layout__sidebar {
