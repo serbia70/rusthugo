@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-Allow: /
-Sitemap: https://serbia70.github.io/rusthugo/sitemap.xml
