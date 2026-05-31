@@ -4,7 +4,7 @@ date = 2024-02-20
 
 [taxonomies]
 tags = ["Zola", "Markdown", "教程"]
-series = ["博客建站，rust"]
+series = ["博客建站", "rust"]
 
 [extra]
 cover_image = "/images/cover-rust.svg"
