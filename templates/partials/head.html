@@ -92,18 +92,9 @@
     {% endif %}
 </noscript>
 
-{% block ext_head %}
-    {#- /* Misc */}}
-    {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
-    {{- template "_internal/google_analytics.html" . }}
-    {{- template "partials/templates/opengraph.html" . }}
-    {{- template "partials/templates/twitter_cards.html" . }}
-    {{- template "partials/templates/schema_json.html" . }}
-    {{- end -#}
-{% endblock %}
+{# ext_head block for custom head injections #}
+{% block ext_head %}{% endblock %}
 
 {% if config.extra.extra_head %}
     {{ config.extra.extra_head | safe }}
 {% endif %}
-
-{% include "extra_head.html" ignore missing %}
