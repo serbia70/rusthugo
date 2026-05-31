@@ -4,11 +4,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Manager</title>
-    <style>
-        body { margin: 0; padding: 0; }
-    </style>
+    <style>body { margin: 0; padding: 0; }</style>
 </head>
 <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<script>
+// OAuth token bridge - handles token from callback popup
+(function() {
+  // Try to load token from URL hash
+  var hash = window.location.hash.slice(1);
+  if (hash) {
+    var params = new URLSearchParams(hash);
+    var token = params.get('token');
+    if (token) {
+      localStorage.setItem('decap-cms-github-token', token);
+      // Clean URL
+      history.replaceState(null, '', '/admin/');
+    }
+  }
+
+  // Listen for postMessage from callback popup
+  window.addEventListener('message', function(e) {
+    if (typeof e.data === 'string' && e.data.startsWith('authorization:github:success:')) {
+      try {
+        var payload = JSON.parse(JSON.parse(e.data.split(':').slice(3).join(':')));
+        if (payload && payload.token) {
+          localStorage.setItem('decap-cms-github-token', payload.token);
+        }
+      } catch(err) {}
+    }
+    // Also handle object format
+    if (e.data && e.data.type === 'authorization' && e.data.token) {
+      localStorage.setItem('decap-cms-github-token', e.data.token);
+    }
+  });
+})();
+</script>
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
