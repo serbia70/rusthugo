@@ -1,7 +1,7 @@
-// Mac-style code block dots and language label
+// Mac-style code block dots and language label (lvbibir style)
 (function() {
     document.querySelectorAll('.post-content pre').forEach(function(pre) {
-        if (pre.querySelector('.mac-dots')) return;
+        if (pre.querySelector('.mac-tool')) return;
 
         var code = pre.querySelector('code[class*="language-"]');
         var lang = '';
@@ -15,18 +15,18 @@
             }
         }
 
-        var macDots = document.createElement('div');
-        macDots.className = 'mac-dots';
-        macDots.innerHTML = '<span class="mac-dot red"></span><span class="mac-dot yellow"></span><span class="mac-dot green"></span>';
+        var macTool = document.createElement('div');
+        macTool.className = 'mac-tool';
+        macTool.innerHTML = '<span class="mac bb1"></span><span class="mac bb2"></span><span class="mac bb3"></span>';
 
         if (lang) {
             var langLabel = document.createElement('span');
-            langLabel.className = 'code-lang';
+            langLabel.className = 'language-type';
             langLabel.textContent = lang;
-            macDots.appendChild(langLabel);
+            macTool.appendChild(langLabel);
         }
 
         pre.style.position = 'relative';
-        pre.insertBefore(macDots, pre.firstChild);
+        pre.insertBefore(macTool, pre.firstChild);
     });
 })();
