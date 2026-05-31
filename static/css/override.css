@@ -266,6 +266,16 @@ button#theme-toggle {
     z-index: 1;
 }
 
+/* Lift interactive elements above .entry-link overlay */
+.post-entry .entry-header,
+.post-entry .entry-footer,
+.post-entry .entry-content,
+.post-entry .entry-cover,
+.post-entry a {
+    position: relative;
+    z-index: 2;
+}
+
 .entry-cover {
     border-radius: var(--lv-radius-media);
     overflow: hidden;

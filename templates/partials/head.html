@@ -25,16 +25,10 @@
 <link rel="canonical" href="{{ current_url }}">
 {% endif %}
 
-{# Fonts loaded from CDN (China-accessible) #}
-<link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.7.0/style.css">
-<style>
-    @font-face {
-        font-family: 'JetBrains Mono';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.19/files/jetbrains-mono-latin-400-normal.woff2) format('woff2');
-    }
-</style>
+{# Fonts loaded from Google Fonts (global CDN) #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=LXGW+WenKai:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ get_url(path='css/styles.css') }}">
 <link rel="stylesheet" href="{{ get_url(path='css/override.css') }}">
 {% if config.extra.papermod.mac_code_block | default(value=true) %}
