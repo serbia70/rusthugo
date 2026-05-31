@@ -1,0 +1,100 @@
+# Site Settings
+base_url = "https://serbia70.github.io/rusthugo"
+title = "rusthugo"
+description = "A blog powered by Zola with PaperMod theme"
+default_language = "en"
+author = "serbia70"
+compile_sass = true
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+minify_html = true
+
+taxonomies = [
+    { name = "tags", feed = true },
+    { name = "series", feed = true },
+]
+
+[search]
+include_title = true
+include_description = false
+include_path = false
+include_content = true
+index_format = "elasticlunr_json"
+
+[markdown]
+highlight_code = true
+highlight_theme = "base16-ocean-dark"
+
+[extra.papermod]
+title = "rusthugo"
+default_theme = "auto"
+theme = "light"
+language_direction = "auto"
+keywords = ["rust", "zola", "blog"]
+show_theme_toggle = true
+show_scroll_to_top = true
+show_code_copy_buttons = true
+show_reading_time = true
+show_word_count = true
+show_post_nav_links = true
+show_post_meta = true
+default_toc_open = false
+show_post_edit_button = false
+show_archive_year_count = true
+show_archive_month_count = true
+date_format = "%Y-%m-%d"
+
+# Navigation
+navigation = [
+    { url = "$BASE_URL/archive", title = "归档" },
+    { url = "$BASE_URL/tags", title = "标签" },
+    { url = "$BASE_URL/search", title = "搜索" },
+]
+
+# Home page
+home_title = "rusthugo"
+home_content = "欢迎来到我的博客！"
+
+# Social icons
+social_icons = [
+    { url = "https://github.com/serbia70", title = "GitHub", icon = "github" },
+    { url = "$BASE_URL/atom.xml", title = "RSS", icon = "rss" },
+]
+
+# --- Enhanced Features (ported from lvbibir Hugo PaperMod) ---
+
+# Series Sidebar
+show_series_sidebar = true
+series_sidebar_layout = "popup"
+
+# Enhanced TOC
+show_toc = true
+toc_open = false
+toc_scroll_sync = true
+
+# Mac-style Code Block
+mac_code_block = true
+
+# Image Lazy Loading
+lazy_loading = true
+
+# Reading Progress Bar
+show_progress_bar = true
+
+# Comments (Twikoo)
+show_comments = true
+comment_system = "twikoo"
+comment_env_id = ""
+comment_script_src = "https://cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.min.js"
+
+# Reward / Donate
+show_reward = true
+reward_wechat_qr = ""
+reward_alipay_qr = ""
+
+# Site Stats
+show_site_stats = true
+site_start_year = 2025
+busuanzi_enable = true
+filing_no = ""
