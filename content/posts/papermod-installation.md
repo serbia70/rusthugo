@@ -1,7 +1,7 @@
 +++
 title = "PaperMod 主题安装与配置"
 date = 2024-03-15
-draft = true
+draft = false
 
 [taxonomies]
 tags = ["PaperMod", "Zola"]
