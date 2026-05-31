@@ -22,6 +22,9 @@ zola-theme-papermod/
 │       ├── progress-bar.js     +     # 阅读进度条
 │       ├── lazy-load.js        +     # 图片懒加载
 │       └── code-copy.js        +     # 增强代码复制
+│   └── admin/                  +
+│       ├── index.html          +     # Decap CMS 入口
+│       └── config.yml          +     # CMS 配置
 ├── templates/
 │   ├── partials/
 │   │   ├── header.html               # 修改: 加进度条
@@ -155,7 +158,55 @@ filing_no = ""
 8. 打赏功能
 9. 友链卡片
 10. 站点统计
-11. 整合测试 + 示例站点
+11. Decap CMS 集成
+12. 整合测试 + 示例站点
+
+## 10. Decap CMS 集成
+
+- `static/admin/index.html` 从 CDN 加载 Decap CMS SPA
+- `static/admin/config.yml` 配置 CMS 集合、字段、后端
+- CMS 通过 GitHub OAuth 认证，直接向仓库提交 Markdown 文件
+- 集合配置对应 Zola 的内容结构：posts、pages、friend links
+
+### CMS 集合设计
+
+```yaml
+backend:
+  name: github
+  repo: serbia70/rusthugo
+  branch: main
+
+collections:
+  - name: "posts"
+    label: "博客文章"
+    folder: "content/posts"
+    create: true
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "标签", name: "tags", widget: "list" }
+      - { label: "系列", name: "series", widget: "string", required: false }
+      - { label: "正文", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "页面"
+    files:
+      - label: "关于"
+        name: "about"
+        file: "content/about/_index.md"
+        fields:
+          - { label: "标题", name: "title", widget: "string" }
+          - { label: "正文", name: "body", widget: "markdown" }
+```
+
+### 目录结构追加
+
+```
+├── static/
+│   └── admin/
+│       ├── index.html          +     # Decap CMS 入口
+│       └── config.yml          +     # CMS 配置
+```
 
 ## Zola vs Hugo 差异处理
 
