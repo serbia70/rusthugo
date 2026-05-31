@@ -83,10 +83,6 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ==================== Global Link Color ==================== */
-a {
-    color: var(--lv-accent);
-}
-
 .post-content a {
     color: var(--lv-accent);
     text-decoration: underline;
@@ -100,7 +96,11 @@ a {
 #menu a,
 .breadcrumbs a,
 .post-tags a,
-.paginav a {
+.paginav a,
+.toc a,
+.series a,
+.post-entry a,
+.entry-link {
     color: inherit;
 }
 
