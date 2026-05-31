@@ -650,12 +650,7 @@ body.has-series .main { max-width: none; }
 
 @media screen and (max-width: 900px) {
     .post-layout { flex-direction: column; padding: 0; }
-    .post-layout__sidebar {
-        width: 100%;
-        position: static;
-        max-height: none;
-        overflow-y: visible;
-    }
+    .post-layout__sidebar { display: none; }
     .post-layout__content { max-width: 100%; }
 }
 
