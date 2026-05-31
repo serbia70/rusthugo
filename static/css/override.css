@@ -59,6 +59,20 @@ body {
     font-family: var(--lv-font-body);
 }
 
+h1, h2, h3, h4, h5, h6,
+.entry-header h1, .entry-header h2,
+.post-title, .entry-content,
+.post-meta, .entry-footer,
+.breadcrumbs, .post-tags,
+.toc, .series, .footer,
+#menu a, .logo a,
+.pagination, .paginav,
+.terms-tags, .post-description,
+.comments, .comment-loader,
+.reward-container, .site-stats {
+    font-family: var(--lv-font-body);
+}
+
 /* ==================== Layout Overrides ==================== */
 .nav {
     max-width: calc(var(--nav-width) + var(--gap) * 10);
