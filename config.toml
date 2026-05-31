@@ -1,5 +1,5 @@
 # Site Settings
-base_url = "https://rusthugo.vercel.app"
+base_url = "https://serbia70.github.io/rusthugo"
 title = "rusthugo"
 description = "A blog powered by Zola with PaperMod theme"
 default_language = "en"
