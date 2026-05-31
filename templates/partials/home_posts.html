@@ -1,5 +1,6 @@
 {# Home page post listing - with cover image support #}
 {% for page in paginator.pages %}
+{% if not page.extra.is_search_page %}
 <article class="post-entry">
   {% if page.extra.cover_image %}
   <div class="post-info">
@@ -23,6 +24,7 @@
   {% endif %}
   <a class="entry-link" aria-label="post link to {{ page.title }}" href="{{ page.permalink }}"></a>
 </article>
+{% endif %}
 {% endfor %}
 
 {% if paginator %}
