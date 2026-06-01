@@ -102,9 +102,9 @@ docker exec headscale headscale nodes list
 ```
 headscale nodes rename --identifier 1 n2
 ```
-docker
+
 ```
-docker exec headscale headscale nodes rename --identifier 1 --name n2
+docker exec headscale headscale nodes rename --identifier 1 n2
 ```
 
 
