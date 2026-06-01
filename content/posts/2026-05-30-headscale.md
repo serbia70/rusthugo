@@ -65,6 +65,10 @@ docker exec -it headscale cat /config.yaml
 查找设备
 docker exec headscale headscale nodes list
 
+## 创建管理员
+
+docker exec headscale headscale users create admin
+
 ## 查询admin
 docker exec headscale headscale users list
 
@@ -128,6 +132,14 @@ systemctl start tailscaled
 tailscale up --login-server https://你的headscale域名.com --authkey 刚才复制的key
 ```
 
+删除 假设是id 6
+```
+headscale nodes delete --identifier 6
+```
+docker删除
+```
+docker exec -it headscale headscale nodes delete --identifier 6
+```
 
 # VPS
 
