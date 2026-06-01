@@ -79,6 +79,26 @@ docker exec headscale headscale nodes tag -i 3 -t tag:admin
 
 tailscale up --login-server=https://headscale.serbia70.com --authkey 这里是token --reset
 
+
+## 给设备命名为n2
+开始就命名
+
+```
+tailscale up --login-server=https://headscale.serbia70.com --authkey <这里输入你的token> --reset --hostname=n2
+```
+
+在 Headscale 服务端进行重命名
+
+登录您的 Headscale 服务器，查看刚才注册的 N1 盒子的 ID
+```
+headscale nodes list
+```
+使用重命名命令（假设查出来的 N1 盒子 ID 为 1）：
+```
+headscale nodes rename --identifier 1 n2
+```
+
+
 ## N1检查错误
 journalctl -u tailscaled -n 20 --no-pager
 
