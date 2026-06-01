@@ -111,6 +111,24 @@ docker exec headscale headscale nodes rename --identifier 1 n2
 ## N1检查错误
 journalctl -u tailscaled -n 20 --no-pager
 
+## tailscale 升级到 headscale
+
+登出原有的 Tailscale 账号
+```
+tailscale logout
+```
+彻底清理旧的缓存状态
+```
+systemctl stop tailscaled
+rm -rf /var/lib/tailscale/tailscaled.state
+systemctl start tailscaled
+```
+注册
+```
+tailscale up --login-server https://你的headscale域名.com --authkey 刚才复制的key
+```
+
+
 # VPS
 
 ## vps创建admin 
