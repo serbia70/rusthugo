@@ -111,6 +111,20 @@ headscale nodes rename --identifier 1 n2
 docker exec headscale headscale nodes rename --identifier 1 n2
 ```
 
+## 启动 tailscaled 服务
+sudo systemctl start tailscaled
+
+## 设置为开机自启（防止重启后又要重新开）
+sudo systemctl enable tailscaled
+
+## 检查进程
+
+sudo systemctl status tailscaled
+
+## 重新连接
+
+sudo tailscale up --login-server=https://headscale.serbia70.com --reset
+
 
 ## N1检查错误
 journalctl -u tailscaled -n 20 --no-pager
