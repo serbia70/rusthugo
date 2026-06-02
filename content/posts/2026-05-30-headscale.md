@@ -129,6 +129,10 @@ sudo tailscale up --login-server=https://headscale.serbia70.com --reset
 ## N1检查错误
 journalctl -u tailscaled -n 20 --no-pager
 
+## N1检查连接
+
+tailscale status
+
 ## tailscale 升级到 headscale
 
 登出原有的 Tailscale 账号
