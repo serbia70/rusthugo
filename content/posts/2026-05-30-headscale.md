@@ -150,7 +150,7 @@ systemctl start tailscaled
 tailscale up --login-server https://你的headscale域名.com --authkey 刚才复制的key
 ```
 
-删除 假设是id 6
+## 删除 假设是id 6
 ```
 headscale nodes delete --identifier 6
 ```
