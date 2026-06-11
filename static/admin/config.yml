@@ -23,9 +23,6 @@ collections:
     extension: "md"
     editor:
       preview: false
-    nested:
-      depth: 1
-      summary: "{{title}}"
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
