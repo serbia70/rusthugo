@@ -23,6 +23,9 @@ collections:
     extension: "md"
     editor:
       preview: false
+    filter:
+      field: "date"
+      pattern: ".+"
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
