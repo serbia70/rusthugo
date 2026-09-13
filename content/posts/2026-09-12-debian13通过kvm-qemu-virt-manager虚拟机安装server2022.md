@@ -9,4 +9,4 @@ series = []
 +++
 将你日常使用的普通用户名（假设为 your_username）加入 libvirt 和 kvm 用户组，后续使用时无需每次都输入 root 密码：
 
-`sudo usermod -aG libvirt,kvm your_username`
+```sudo usermod -aG libvirt,kvm your_username```
