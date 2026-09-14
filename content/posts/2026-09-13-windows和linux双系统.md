@@ -22,7 +22,7 @@ sudo mount /dev/sda1 /mnt
 for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done
 ```
 (注：如果你的 Debian 不是安装在 sda1，请把 sda1 换成实际的分区，比如 sda2 或 sda3)
-
+查询 lsblk     看容量
 
 进入硬盘上的 Debian 系统
 ```
