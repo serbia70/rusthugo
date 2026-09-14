@@ -28,6 +28,23 @@ for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done
 ```
 sudo chroot /mnt
 ```
+安装扫描工具
+```
+apt update && apt install os-prober -y
+```
+
+开启扫描 Windows 功能（核心一步！）
+```
+echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
+```
+
+重新生成引导菜单
+```
+update-grub
+```
+
+
+
 
 重新安装 GRUB 引导并自动识别 Windows 10
 ```
